@@ -515,8 +515,8 @@
       }
     }
   </style>
-</head>
-<body>
+  <!-- Plays "madeinjapan.mp3" directly from the same GitHub folder -->
+  <audio id="songAudio" preload="auto" src="madeinjapan.mp3"></audio>
 
   <!-- ========================================================================
        FIXED GPU-COMPOSITED MOUNT FUJI & LAKE KAWAGUCHI PANORAMA
@@ -780,7 +780,7 @@
     lyricStages.forEach((stage) => lyricObserver.observe(stage));
 
     /* ==========================================================================
-       4. AUDIO ENGINE ("made-in-japan.mp3" + COUNTRY-ACOUSTIC FALLBACK)
+       4. DIRECT MP3 AUDIO ENGINE ("madeinjapan.mp3")
        ========================================================================== */
     const songAudio = document.getElementById('songAudio');
     const playToggleBtn = document.getElementById('playToggleBtn');
@@ -790,32 +790,13 @@
     const eqBars = document.getElementById('eqBars');
     const progressTrack = document.getElementById('progressTrack');
     const progressFill = document.getElementById('progressFill');
+    const pillSongName = document.querySelector('.pill-song-name');
     const lyricSections = Array.from(document.querySelectorAll('.lyric-section, .final-note-section'));
 
     let isPlaying = false;
-    let useLocalFile = false;
-    let audioCtx = null;
-    let grooveTimer = null;
-    let grooveStartTime = 0;
     let currentBeatIdx = 0;
     let isProgrammaticScroll = false;
     let scrollUnlockTimer = null;
-    const TRACK_DURATION_SEC = 145;
-
-    // Detect if "madeinjapan.mp3" (or .m4a/.wav) is placed alongside index.html on GitHub Pages
-    const candidateAudioFiles = ['./madeinjapan.mp3', './madeinjapan.m4a', './madeinjapan.wav'];
-    (async function detectLocalAudioFile() {
-      for (const filePath of candidateAudioFiles) {
-        try {
-          const res = await fetch(filePath, { method: 'HEAD' });
-          if (res.ok) {
-            songAudio.src = filePath;
-            useLocalFile = true;
-            break;
-          }
-        } catch (_) {}
-      }
-    })();
 
     // Prevent manual wheel/touch/keyboard scrolling while song auto-sync is playing
     function blockManualScroll(e) {
@@ -829,6 +810,85 @@
     window.addEventListener('keydown', (e) => {
       if (isPlaying && ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
         e.preventDefault();
+      }
+    });
+
+    function smoothGlideToSection(targetEl) {
+      if (!targetEl) return;
+      isProgrammaticScroll = true;
+      clearTimeout(scrollUnlockTimer);
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollUnlockTimer = setTimeout(() => {
+        isProgrammaticScroll = false;
+      }, 950);
+    }
+
+    function setPlayingUI(playing) {
+      isPlaying = playing;
+      document.documentElement.classList.toggle('auto-sync-active', playing);
+      document.body.classList.toggle('auto-sync-active', playing);
+      playIcon.style.display = playing ? 'none' : 'block';
+      pauseIcon.style.display = playing ? 'block' : 'none';
+      discBadge.classList.toggle('spinning', playing);
+      eqBars.classList.toggle('active', playing);
+      if (playing) {
+        smoothGlideToSection(lyricSections[currentBeatIdx] || lyricSections[0]);
+      }
+    }
+
+    playToggleBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        songAudio.play()
+          .then(() => {
+            pillSongName.textContent = 'Buck Owens — Made in Japan (1972)';
+            setPlayingUI(true);
+          })
+          .catch(() => {
+            pillSongName.textContent = 'Put madeinjapan.mp3 in same folder!';
+            setPlayingUI(false);
+          });
+      } else {
+        songAudio.pause();
+        setPlayingUI(false);
+      }
+    });
+
+    songAudio.addEventListener('ended', () => setPlayingUI(false));
+
+    progressTrack.addEventListener('click', (e) => {
+      if (!songAudio.duration) return;
+      const rect = progressTrack.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+      const newElapsed = ratio * songAudio.duration;
+      songAudio.currentTime = newElapsed;
+      progressFill.style.width = (ratio * 100).toFixed(1) + '%';
+
+      let seekIdx = 0;
+      for (let i = 0; i < lyricSections.length; i++) {
+        if (newElapsed >= Number(lyricSections[i].dataset.start || 0)) {
+          seekIdx = i;
+        }
+      }
+      currentBeatIdx = seekIdx;
+      smoothGlideToSection(lyricSections[seekIdx]);
+    });
+
+    // Real-time audio sync with lyrics
+    songAudio.addEventListener('timeupdate', () => {
+      if (!isPlaying || !songAudio.duration) return;
+      const elapsed = songAudio.currentTime;
+      progressFill.style.width = Math.min(100, (elapsed / songAudio.duration) * 100).toFixed(1) + '%';
+
+      let targetIdx = 0;
+      for (let i = 0; i < lyricSections.length; i++) {
+        if (elapsed >= Number(lyricSections[i].dataset.start || 0)) {
+          targetIdx = i;
+        }
+      }
+
+      if (targetIdx !== currentBeatIdx) {
+        currentBeatIdx = targetIdx;
+        smoothGlideToSection(lyricSections[targetIdx]);
       }
     });
 
