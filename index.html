@@ -515,8 +515,8 @@
       }
     }
   </style>
-  <!-- Plays "madeinjapan.mp3" directly from the same GitHub folder -->
-  <audio id="songAudio" preload="auto" src="madeinjapan.mp3"></audio>
+</head>
+<body>
 
   <!-- ========================================================================
        FIXED GPU-COMPOSITED MOUNT FUJI & LAKE KAWAGUCHI PANORAMA
@@ -607,7 +607,7 @@
     </button>
   </header>
 
-  <!-- Plays "madeinjapan.mp3" if placed in the GitHub repo, otherwise uses the built-in country-acoustic progression -->
+  <!-- Plays "madeinjapan.mp3" directly from the same GitHub folder -->
   <audio id="songAudio" preload="auto" src="./madeinjapan.mp3"></audio>
 
   <!-- ========================================================================
@@ -627,7 +627,7 @@
     </section>
 
     <!-- SECTION 2: VERSE 1 -->
-    <section class="lyric-section" data-start="12">
+    <section class="lyric-section" data-start="9">
       <div class="lyric-stage">
         <div class="big-lyric-verse">
           <span>My transistor radio comes from far away</span>
@@ -642,7 +642,7 @@
     </section>
 
     <!-- SECTION 3: VERSE 2 -->
-    <section class="lyric-section" data-start="38">
+    <section class="lyric-section" data-start="42">
       <div class="lyric-stage">
         <div class="big-lyric-verse">
           <span>That beauty of her face was beyond my wildest dreams</span>
@@ -657,7 +657,7 @@
     </section>
 
     <!-- SECTION 4: VERSE 3 -->
-    <section class="lyric-section" data-start="68">
+    <section class="lyric-section" data-start="76">
       <div class="lyric-stage">
         <div class="big-lyric-verse">
           <span>In the dark of night, we would lay on Tokyo Bay</span>
@@ -672,7 +672,7 @@
     </section>
 
     <!-- SECTION 5: CHORUS / FINALE -->
-    <section class="lyric-section" data-start="98">
+    <section class="lyric-section" data-start="112">
       <div class="lyric-stage">
         <div class="big-lyric-verse">
           <span>She cried when she said she'd been promised to another man</span>
@@ -686,7 +686,7 @@
     </section>
 
     <!-- SECTION 6: FINAL KEEPSAKE NOTE -->
-    <section class="final-note-section" data-start="124" aria-label="Personal keepsake note">
+    <section class="final-note-section" data-start="145" aria-label="Personal keepsake note">
       <button class="open-note-trigger" id="openNoteBtn" aria-expanded="false">
         Open Your Note ✨
       </button>
@@ -794,7 +794,7 @@
     const lyricSections = Array.from(document.querySelectorAll('.lyric-section, .final-note-section'));
 
     let isPlaying = false;
-    let currentBeatIdx = 0;
+    let currentBeatIdx = -1;
     let isProgrammaticScroll = false;
     let scrollUnlockTimer = null;
 
@@ -817,10 +817,31 @@
       if (!targetEl) return;
       isProgrammaticScroll = true;
       clearTimeout(scrollUnlockTimer);
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      const targetTop = targetEl.offsetTop + (targetEl.offsetHeight / 2) - (window.innerHeight / 2);
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: 'smooth'
+      });
+
       scrollUnlockTimer = setTimeout(() => {
         isProgrammaticScroll = false;
       }, 950);
+    }
+
+    function syncLyricsToTime(elapsedSeconds, forceScroll = false) {
+      let targetIdx = 0;
+      for (let i = 0; i < lyricSections.length; i++) {
+        const startSec = Number(lyricSections[i].dataset.start || 0);
+        if (elapsedSeconds >= startSec) {
+          targetIdx = i;
+        }
+      }
+
+      if (targetIdx !== currentBeatIdx || forceScroll) {
+        currentBeatIdx = targetIdx;
+        smoothGlideToSection(lyricSections[targetIdx]);
+      }
     }
 
     function setPlayingUI(playing) {
@@ -832,7 +853,7 @@
       discBadge.classList.toggle('spinning', playing);
       eqBars.classList.toggle('active', playing);
       if (playing) {
-        smoothGlideToSection(lyricSections[currentBeatIdx] || lyricSections[0]);
+        syncLyricsToTime(songAudio.currentTime || 0, true);
       }
     }
 
@@ -853,7 +874,10 @@
       }
     });
 
-    songAudio.addEventListener('ended', () => setPlayingUI(false));
+    songAudio.addEventListener('ended', () => {
+      currentBeatIdx = -1;
+      setPlayingUI(false);
+    });
 
     progressTrack.addEventListener('click', (e) => {
       if (!songAudio.duration) return;
@@ -862,185 +886,18 @@
       const newElapsed = ratio * songAudio.duration;
       songAudio.currentTime = newElapsed;
       progressFill.style.width = (ratio * 100).toFixed(1) + '%';
-
-      let seekIdx = 0;
-      for (let i = 0; i < lyricSections.length; i++) {
-        if (newElapsed >= Number(lyricSections[i].dataset.start || 0)) {
-          seekIdx = i;
-        }
-      }
-      currentBeatIdx = seekIdx;
-      smoothGlideToSection(lyricSections[seekIdx]);
+      syncLyricsToTime(newElapsed, true);
     });
 
-    // Real-time audio sync with lyrics
+    // High-precision audio sync with lyrics
     songAudio.addEventListener('timeupdate', () => {
-      if (!isPlaying || !songAudio.duration) return;
+      if (!songAudio.duration) return;
       const elapsed = songAudio.currentTime;
       progressFill.style.width = Math.min(100, (elapsed / songAudio.duration) * 100).toFixed(1) + '%';
-
-      let targetIdx = 0;
-      for (let i = 0; i < lyricSections.length; i++) {
-        if (elapsed >= Number(lyricSections[i].dataset.start || 0)) {
-          targetIdx = i;
-        }
-      }
-
-      if (targetIdx !== currentBeatIdx) {
-        currentBeatIdx = targetIdx;
-        smoothGlideToSection(lyricSections[targetIdx]);
+      if (isPlaying) {
+        syncLyricsToTime(elapsed, false);
       }
     });
-
-    function smoothGlideToSection(targetEl) {
-      if (!targetEl) return;
-      isProgrammaticScroll = true;
-      clearTimeout(scrollUnlockTimer);
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      scrollUnlockTimer = setTimeout(() => {
-        isProgrammaticScroll = false;
-      }, 950);
-    }
-
-    function setPlayingUI(playing) {
-      isPlaying = playing;
-      document.documentElement.classList.toggle('auto-sync-active', playing);
-      document.body.classList.toggle('auto-sync-active', playing);
-      playIcon.style.display = playing ? 'none' : 'block';
-      pauseIcon.style.display = playing ? 'block' : 'none';
-      discBadge.classList.toggle('spinning', playing);
-      eqBars.classList.toggle('active', playing);
-      if (playing) {
-        smoothGlideToSection(lyricSections[currentBeatIdx] || lyricSections[0]);
-      }
-    }
-
-    // Warm country-acoustic guitar style chord progression fallback (G -> D -> C -> G)
-    function startCountryAcousticFallback() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      grooveStartTime = performance.now();
-
-      const chords = [
-        [196.00, 246.94, 293.66, 392.00, 493.88], // G Major
-        [146.83, 220.00, 293.66, 369.99, 440.00], // D Major
-        [130.81, 196.00, 261.63, 329.63, 392.00], // C Major
-        [196.00, 246.94, 293.66, 392.00, 587.33]  // G Major (open high D)
-      ];
-      let step = 0;
-
-      const playStrum = () => {
-        if (!isPlaying || useLocalFile) return;
-        const voicing = chords[step % chords.length];
-        step++;
-        const now = audioCtx.currentTime;
-
-        voicing.forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const overtone = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          const overtoneGain = audioCtx.createGain();
-
-          osc.type = 'triangle';
-          overtone.type = 'sine';
-          const strumDelay = idx * 0.045;
-          osc.frequency.setValueAtTime(freq, now + strumDelay);
-          overtone.frequency.setValueAtTime(freq * 2, now + strumDelay);
-
-          overtoneGain.gain.setValueAtTime(0.008, now + strumDelay);
-
-          gain.gain.setValueAtTime(0.0001, now + strumDelay);
-          gain.gain.exponentialRampToValueAtTime(idx === 0 ? 0.05 : 0.032, now + strumDelay + 0.04);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + strumDelay + 2.1);
-
-          osc.connect(gain);
-          overtone.connect(overtoneGain);
-          overtoneGain.connect(gain);
-          gain.connect(audioCtx.destination);
-
-          osc.start(now + strumDelay);
-          overtone.start(now + strumDelay);
-          osc.stop(now + strumDelay + 2.2);
-          overtone.stop(now + strumDelay + 2.2);
-        });
-      };
-
-      playStrum();
-      clearInterval(grooveTimer);
-      grooveTimer = setInterval(playStrum, 2200);
-      setPlayingUI(true);
-    }
-
-    function stopCountryAcousticFallback() {
-      clearInterval(grooveTimer);
-    }
-
-    playToggleBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        if (useLocalFile) {
-          songAudio.play()
-            .then(() => setPlayingUI(true))
-            .catch(() => {
-              useLocalFile = false;
-              startCountryAcousticFallback();
-            });
-        } else {
-          startCountryAcousticFallback();
-        }
-      } else {
-        if (useLocalFile) songAudio.pause();
-        stopCountryAcousticFallback();
-        setPlayingUI(false);
-      }
-    });
-
-    songAudio.addEventListener('ended', () => setPlayingUI(false));
-
-    progressTrack.addEventListener('click', (e) => {
-      const rect = progressTrack.getBoundingClientRect();
-      const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-      const newElapsed = ratio * (useLocalFile && songAudio.duration ? songAudio.duration : TRACK_DURATION_SEC);
-      if (useLocalFile && songAudio.duration) {
-        songAudio.currentTime = newElapsed;
-      } else {
-        grooveStartTime = performance.now() - newElapsed * 1000;
-      }
-      progressFill.style.width = (ratio * 100).toFixed(1) + '%';
-
-      let seekIdx = 0;
-      for (let i = 0; i < lyricSections.length; i++) {
-        if (newElapsed >= Number(lyricSections[i].dataset.start || 0)) {
-          seekIdx = i;
-        }
-      }
-      currentBeatIdx = seekIdx;
-      smoothGlideToSection(lyricSections[seekIdx]);
-    });
-
-    // Gentle lyric & progress sync (controls page scroll automatically while playing)
-    setInterval(() => {
-      if (!isPlaying) return;
-      const elapsed = useLocalFile
-        ? (songAudio.currentTime || 0)
-        : ((performance.now() - grooveStartTime) / 1000) % TRACK_DURATION_SEC;
-      const total = useLocalFile ? (songAudio.duration || TRACK_DURATION_SEC) : TRACK_DURATION_SEC;
-
-      progressFill.style.width = Math.min(100, (elapsed / total) * 100).toFixed(1) + '%';
-
-      let targetIdx = 0;
-      for (let i = 0; i < lyricSections.length; i++) {
-        if (elapsed >= Number(lyricSections[i].dataset.start || 0)) {
-          targetIdx = i;
-        }
-      }
-
-      if (targetIdx !== currentBeatIdx) {
-        currentBeatIdx = targetIdx;
-        smoothGlideToSection(lyricSections[targetIdx]);
-      }
-    }, 350);
 
     /* ==========================================================================
        5. 60FPS CANVAS: FALLING HYDRANGEA (AJISAI) & WISTERIA (FUJI) PETALS
