@@ -3,34 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<title>For Tanishka</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Quicksand:wght@300;400;500&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Quicksand', sans-serif;
     color: #7a4a5a;
-    background: #ffe3ec;
+    background: linear-gradient(180deg, #e9b8da 0%, #ffd0e0 35%, #ffe3d6 70%, #d98aa8 100%);
+    background-attachment: fixed;
     overflow-x: hidden;
     min-height: 100vh;
   }
 
-  /* Fixed Japan scene behind everything */
-  #scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  /* ===== Welcome screen ===== */
+  #welcome {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+    background: linear-gradient(160deg, #ffd6e3, #ffe9d9 50%, #ffc9dc);
+    transition: opacity 1.4s ease, visibility 1.4s;
+  }
+  #welcome.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  #welcome .hi { font-family: 'Dancing Script', cursive; font-size: clamp(2.4rem, 11vw, 4rem); color: #b5506f; animation: glow 3s ease-in-out infinite alternate; }
+  #welcome .sub { margin-top: 12px; font-size: 1rem; color: #a8697f; letter-spacing: 1px; }
+  #openBtn {
+    margin-top: 34px; padding: 14px 34px; border: none; border-radius: 40px;
+    background: linear-gradient(135deg, #ff9fbd, #ff7fa5); color: #fff;
+    font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 500; letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(255,127,165,0.45); cursor: pointer;
+    animation: beat 1.8s ease-in-out infinite;
+  }
+  @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+
+  /* ===== Fixed Japan scene ===== */
+  #scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, #e9b8da 0%, #ffd0e0 35%, #ffe3d6 70%, #f7b8cd 100%);
+  }
   #scene svg { width: 100%; height: 100%; display: block; }
-  .sun-glow { animation: pulse 6s ease-in-out infinite alternate; transform-origin: 50% 50%; }
-  @keyframes pulse { from { opacity: 0.75; } to { opacity: 1; } }
+  .sun-glow { animation: pulse 6s ease-in-out infinite alternate; }
+  @keyframes pulse { from { opacity: 0.7; } to { opacity: 1; } }
   .cloud { animation: drift 40s linear infinite; }
   .cloud.c2 { animation-duration: 60s; animation-delay: -20s; }
   @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(1400px); } }
+  .twinkle { animation: tw 2.5s ease-in-out infinite alternate; }
+  @keyframes tw { from { opacity: 0.2; } to { opacity: 1; } }
+  .lantern { animation: sway 4s ease-in-out infinite alternate; transform-origin: 50% 0; }
+  .lantern.l2 { animation-delay: -1.5s; animation-duration: 5s; }
+  .lantern.l3 { animation-delay: -3s; }
+  @keyframes sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+  .lglow { animation: tw 3s ease-in-out infinite alternate; }
 
-  #petals { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  #petals, #fireflies, #bursts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  #petals { z-index: 1; }
+  #fireflies { z-index: 1; }
+  #bursts { z-index: 60; }
   .petal {
     position: absolute; top: -30px;
     background: radial-gradient(circle at 30% 30%, #fff 0%, #ffc2d6 60%, #ff9fbd 100%);
-    border-radius: 150% 0 150% 0;
-    opacity: 0.85;
+    border-radius: 150% 0 150% 0; opacity: 0.85;
     animation: fall linear infinite;
   }
   @keyframes fall {
@@ -38,25 +74,49 @@
     10% { opacity: 0.9; }
     100% { transform: translateY(110vh) translateX(80px) rotate(540deg); opacity: 0.2; }
   }
+  .firefly {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    background: #fff6c9; box-shadow: 0 0 10px 4px rgba(255,236,150,0.8);
+    animation: float ease-in-out infinite alternate, blink 2.4s ease-in-out infinite alternate;
+  }
+  @keyframes float { from { transform: translate(0,0); } to { transform: translate(40px,-60px); } }
+  @keyframes blink { from { opacity: 0.15; } to { opacity: 1; } }
+  .burst-petal {
+    position: absolute; width: 12px; height: 12px;
+    background: radial-gradient(circle at 30% 30%, #fff, #ff9fbd);
+    border-radius: 150% 0 150% 0;
+    animation: burst 1.6s ease-out forwards;
+  }
+  @keyframes burst {
+    from { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+    to { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(0.4); opacity: 0; }
+  }
+  .floatheart {
+    position: absolute; font-size: 22px; color: #ff6f9c;
+    animation: rise 2.4s ease-out forwards;
+  }
+  @keyframes rise { from { transform: translateY(0) scale(0.6); opacity: 1; } to { transform: translateY(-160px) scale(1.3); opacity: 0; } }
 
+  /* ===== Hero ===== */
   .hero {
     position: relative; z-index: 2;
     height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: flex-start; text-align: center;
-    padding: 18vh 24px 0;
+    padding: 16vh 24px 0;
   }
-  .kanji { font-size: 1rem; letter-spacing: 8px; color: #b5506f; opacity: 0.8; margin-bottom: 10px; }
+  .kanji { font-size: 1rem; letter-spacing: 8px; color: #b5506f; opacity: 0.85; margin-bottom: 10px; }
   .hero h1 {
     font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(2.2rem, 8vw, 3.6rem); color: #a8416291;
-    color: #a84162;
+    font-size: clamp(2.2rem, 8vw, 3.6rem); color: #a84162;
     animation: glow 3s ease-in-out infinite alternate;
   }
-  .hero p { margin-top: 14px; font-size: 1rem; letter-spacing: 2px; color: #a8697f; }
+  .hero .for { margin-top: 16px; font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.6rem); color: #c2456f; text-shadow: 0 0 14px #fff; }
+  .hero p { margin-top: 10px; font-size: 0.95rem; letter-spacing: 2px; color: #8a4a62; }
   .hint { position: absolute; bottom: 36px; font-size: 0.85rem; color: #8a4a62; animation: bob 2s ease-in-out infinite; }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
   @keyframes glow { from { text-shadow: 0 0 8px #fff; } to { text-shadow: 0 0 22px #fff, 0 0 34px #ffc2d6; } }
 
+  /* ===== Lyrics ===== */
   .lyrics {
     position: relative; z-index: 2;
     max-width: 520px; margin: 0 auto; padding: 20vh 28px 30vh; text-align: center;
@@ -73,23 +133,51 @@
   .gap { height: 14vh; }
   .end {
     position: relative; z-index: 2; text-align: center; padding: 0 24px 22vh;
-    font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: #a84162;
-    text-shadow: 0 0 12px rgba(255,255,255,0.9);
+    font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.4rem); color: #a84162;
+    text-shadow: 0 0 12px rgba(255,255,255,0.95);
     opacity: 0; transition: opacity 3s ease;
   }
   .end.show { opacity: 1; }
+  .end small { display: block; margin-top: 10px; font-family: 'Quicksand', sans-serif; font-size: 0.85rem; letter-spacing: 2px; color: #8a4a62; }
+
+  /* Music note, floating bottom-right */
+  #tapHint {
+    position: fixed; bottom: 18px; right: 18px; z-index: 50;
+    font-size: 0.75rem; color: #8a4a62; background: rgba(255,255,255,0.6);
+    padding: 6px 12px; border-radius: 20px; backdrop-filter: blur(6px);
+  }
+  #musicBtn {
+    position: fixed; bottom: 18px; left: 18px; z-index: 55;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.65); color: #8a4a62;
+    font-family: 'Quicksand', sans-serif; font-size: 0.78rem; font-weight: 500;
+    padding: 7px 14px; border-radius: 24px; backdrop-filter: blur(8px);
+    cursor: pointer; box-shadow: 0 4px 14px rgba(168, 65, 98, 0.14);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  #musicBtn:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
 
-<!-- Japan scene: sky, sun, Mount Fuji, hills, torii gate, sakura branch -->
+<!-- Background Audio (place madeinjapan.mp3 in the same folder) -->
+<audio id="song" src="madeinjapan.mp3" preload="auto"></audio>
+
+<!-- Welcome screen with her name -->
+<div id="welcome">
+  <div class="hi">Hey Tanishka &#10084;</div>
+  <div class="sub">I made something small, just for you</div>
+  <button id="openBtn">Tap to open &#127800;</button>
+</div>
+
+<!-- Japan scene: starry sky, sun, Fuji, hills, torii, lanterns, sakura branch -->
 <div id="scene">
-  <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax meet" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#ffd6e3"/>
-        <stop offset="0.45" stop-color="#ffe6d9"/>
-        <stop offset="0.75" stop-color="#ffd1dc"/>
+        <stop offset="0" stop-color="#e9b8da"/>
+        <stop offset="0.35" stop-color="#ffd0e0"/>
+        <stop offset="0.7" stop-color="#ffe3d6"/>
         <stop offset="1" stop-color="#f7b8cd"/>
       </linearGradient>
       <linearGradient id="fuji" x1="0" y1="0" x2="0" y2="1">
@@ -101,31 +189,308 @@
         <stop offset="0.7" stop-color="#ff9db4"/>
         <stop offset="1" stop-color="#ff9db4" stop-opacity="0"/>
       </radialGradient>
+      <radialGradient id="lampG" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#fff2b8" stop-opacity="0.95"/>
+        <stop offset="1" stop-color="#ffb870" stop-opacity="0"/>
+      </radialGradient>
+      <!-- Detailed 5-petal Sakura blossom symbol -->
+      <g id="sakura-flower">
+        <g fill="#ffb3cc">
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(72)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(144)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(216)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(288)"/>
+        </g>
+        <g fill="#ffe3ed" opacity="0.85">
+          <circle cx="0" cy="-4.5" r="1.6"/>
+          <circle cx="4.3" cy="-1.4" r="1.6"/>
+          <circle cx="2.6" cy="3.6" r="1.6"/>
+          <circle cx="-2.6" cy="3.6" r="1.6"/>
+          <circle cx="-4.3" cy="-1.4" r="1.6"/>
+        </g>
+        <circle cx="0" cy="0" r="2.2" fill="#d94e78"/>
+        <circle cx="0" cy="0" r="0.9" fill="#fff3b8"/>
+      </g>
+      <g id="sakura-flower-light">
+        <g fill="#ffd4e3">
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(72)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(144)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(216)"/>
+          <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z" transform="rotate(288)"/>
+        </g>
+        <circle cx="0" cy="0" r="2.1" fill="#e05c85"/>
+        <circle cx="0" cy="0" r="0.8" fill="#fff6cc"/>
+      </g>
     </defs>
 
-    <rect width="400" height="800" fill="url(#sky)"/>
+    <!-- Full-bleed sky & seamless horizon extension -->
+    <rect x="-1200" y="-400" width="2800" height="1400" fill="url(#sky)"/>
 
-    <!-- Rising sun (hinomaru style) -->
-    <circle class="sun-glow" cx="200" cy="430" r="120" fill="url(#sunG)" opacity="0.6"/>
-    <circle cx="200" cy="430" r="70" fill="#ff8fa8" opacity="0.9"/>
+    <!-- Twinkling stars spread across the entire wide sky -->
+    <g fill="#fff">
+      <circle class="twinkle" cx="-480" cy="80" r="1.5"/>
+      <circle class="twinkle" style="animation-delay:-1.1s" cx="-360" cy="140" r="1.8"/>
+      <circle class="twinkle" style="animation-delay:-.4s" cx="-240" cy="65" r="1.4"/>
+      <circle class="twinkle" style="animation-delay:-1.9s" cx="-130" cy="175" r="1.6"/>
+      <circle class="twinkle" style="animation-delay:-.8s" cx="-40" cy="115" r="1.3"/>
+      <circle class="twinkle" cx="40" cy="60" r="1.6"/>
+      <circle class="twinkle" style="animation-delay:-.6s" cx="110" cy="110" r="1.2"/>
+      <circle class="twinkle" style="animation-delay:-1.2s" cx="180" cy="50" r="1.8"/>
+      <circle class="twinkle" style="animation-delay:-1.8s" cx="240" cy="150" r="1.3"/>
+      <circle class="twinkle" style="animation-delay:-.3s" cx="70" cy="190" r="1.5"/>
+      <circle class="twinkle" style="animation-delay:-2.1s" cx="150" cy="230" r="1.1"/>
+      <circle class="twinkle" style="animation-delay:-.9s" cx="220" cy="260" r="1.4"/>
+      <circle class="twinkle" style="animation-delay:-1.5s" cx="20" cy="270" r="1.2"/>
+      <circle class="twinkle" style="animation-delay:-2.4s" cx="130" cy="20" r="1.3"/>
+      <circle class="twinkle" style="animation-delay:-.7s" cx="460" cy="95" r="1.7"/>
+      <circle class="twinkle" style="animation-delay:-1.6s" cx="560" cy="165" r="1.4"/>
+      <circle class="twinkle" style="animation-delay:-.2s" cx="680" cy="70" r="1.6"/>
+      <circle class="twinkle" style="animation-delay:-2.0s" cx="790" cy="135" r="1.5"/>
+      <circle class="twinkle" style="animation-delay:-1.3s" cx="890" cy="85" r="1.3"/>
+    </g>
 
-    <!-- Soft clouds -->
+    <!-- Crescent moon -->
+    <g class="twinkle" style="animation-duration:5s">
+      <circle cx="320" cy="210" r="20" fill="#fff8e8"/>
+      <circle cx="329" cy="205" r="18" fill="#ffd9e6"/>
+    </g>
+
+    <!-- Rising sun -->
+    <circle class="sun-glow" cx="200" cy="365" r="145" fill="url(#sunG)" opacity="0.6"/>
+    <circle cx="200" cy="365" r="88" fill="#ff8fa8" opacity="0.9"/>
+
+    <!-- Soft clouds drifting across wide horizon -->
     <g class="cloud" fill="#fff" opacity="0.75">
-      <ellipse cx="60" cy="300" rx="50" ry="11"/><ellipse cx="95" cy="292" rx="34" ry="10"/>
+      <ellipse cx="-260" cy="340" rx="58" ry="12"/><ellipse cx="-220" cy="331" rx="38" ry="10"/>
+      <ellipse cx="60" cy="320" rx="50" ry="11"/><ellipse cx="95" cy="312" rx="34" ry="10"/>
+      <ellipse cx="520" cy="335" rx="55" ry="12"/><ellipse cx="560" cy="326" rx="36" ry="10"/>
     </g>
     <g class="cloud c2" fill="#fff" opacity="0.65">
-      <ellipse cx="-100" cy="380" rx="60" ry="12"/><ellipse cx="-60" cy="371" rx="38" ry="10"/>
+      <ellipse cx="-420" cy="410" rx="64" ry="12"/><ellipse cx="-380" cy="401" rx="40" ry="10"/>
+      <ellipse cx="-100" cy="390" rx="60" ry="12"/><ellipse cx="-60" cy="381" rx="38" ry="10"/>
+      <ellipse cx="640" cy="400" rx="62" ry="12"/><ellipse cx="685" cy="391" rx="40" ry="10"/>
     </g>
 
-    <!-- Mount Fuji -->
-    <path d="M-20 640 L150 470 Q200 420 250 470 L420 640 Z" fill="url(#fuji)"/>
-    <!-- Snow cap -->
-    <path d="M150 470 Q200 420 250 470 L238 478 L224 466 L212 482 L198 466 L184 484 L170 468 Z" fill="#fff7fa"/>
+    <!-- Distant Misty Mountain Range flanking Mount Fuji on both sides -->
+    <path d="M-1200 630 L-960 470 Q-890 420 -820 470 L-660 610 L-490 445 Q-420 390 -350 445 L-170 630 Z" fill="#cfa2bf" opacity="0.55"/>
+    <path d="M570 630 L740 445 Q810 390 880 445 L1040 600 L1210 465 Q1280 415 1350 465 L1600 630 Z" fill="#cfa2bf" opacity="0.55"/>
 
-    <!-- Far hills -->
-    <path d="M-20 640 Q60 585 140 625 T300 618 T420 630 L420 800 L-20 800 Z" fill="#e9a9c0" opacity="0.85"/>
-    <!-- Near hills -->
-    <path d="M-20 700 Q90 650 190 690 T420 680 L420 800 L-20 800 Z" fill="#d98aa8"/>
+    <!-- Grand, oversized Mount Fuji with snow cap -->
+    <path d="M-170 675 L112 355 Q200 268 288 355 L570 675 Z" fill="url(#fuji)"/>
+    <path d="M112 355 Q200 268 288 355 L268 374 L244 351 L222 381 L200 351 L178 383 L156 353 L132 374 Z" fill="#fff7fa"/>
+
+    <!-- Hills (extended full-width across desktop & mobile) -->
+    <path d="M-1200 630 Q-600 595 0 640 Q70 590 145 625 T300 618 T400 630 Q900 595 1600 630 L1600 900 L-1200 900 Z" fill="#e9a9c0" opacity="0.85"/>
+    <path d="M-1200 685 Q-500 655 0 700 Q95 655 190 690 T400 680 Q950 650 1600 685 L1600 900 L-1200 900 Z" fill="#d98aa8"/>
+
+    <!-- Far-Left Sakura Grove (Fills Wide Desktop Left Wing) -->
+    <g>
+      <!-- Outer Left Sakura Tree 1 -->
+      <path d="M-380 715 Q-370 645 -384 575 Q-394 520 -356 468" stroke="#6b3242" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M-380 625 Q-418 592 -456 572" stroke="#6b3242" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M-378 585 Q-332 548 -286 530" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+      <path d="M-372 528 Q-408 492 -442 476" stroke="#6b3242" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M-364 495 Q-324 462 -288 450" stroke="#6b3242" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <g fill="#f58eb2" opacity="0.72">
+        <ellipse cx="-446" cy="566" rx="40" ry="25"/>
+        <ellipse cx="-382" cy="530" rx="52" ry="32"/>
+        <ellipse cx="-302" cy="526" rx="44" ry="26"/>
+        <ellipse cx="-356" cy="462" rx="50" ry="30"/>
+      </g>
+      <use href="#sakura-flower" transform="translate(-454,568) scale(1.2) rotate(18)"/>
+      <use href="#sakura-flower-light" transform="translate(-426,552) scale(1.3) rotate(44)"/>
+      <use href="#sakura-flower" transform="translate(-392,526) scale(1.35) rotate(12)"/>
+      <use href="#sakura-flower-light" transform="translate(-356,518) scale(1.25) rotate(52)"/>
+      <use href="#sakura-flower" transform="translate(-316,528) scale(1.3) rotate(28)"/>
+      <use href="#sakura-flower-light" transform="translate(-286,522) scale(1.15) rotate(60)"/>
+      <use href="#sakura-flower" transform="translate(-432,482) scale(1.2) rotate(32)"/>
+      <use href="#sakura-flower-light" transform="translate(-396,464) scale(1.3) rotate(16)"/>
+      <use href="#sakura-flower" transform="translate(-358,442) scale(1.35) rotate(48)"/>
+      <use href="#sakura-flower-light" transform="translate(-318,454) scale(1.25) rotate(22)"/>
+      <use href="#sakura-flower" transform="translate(-286,448) scale(1.1) rotate(64)"/>
+
+      <!-- Mid-Left Sakura Tree 2 -->
+      <path d="M-190 698 Q-184 642 -194 590 Q-202 546 -172 504" stroke="#7a3b4d" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M-190 618 Q-222 590 -252 576" stroke="#7a3b4d" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <path d="M-188 584 Q-152 556 -118 542" stroke="#7a3b4d" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <g fill="#f79bb9" opacity="0.72">
+        <ellipse cx="-244" cy="570" rx="34" ry="22"/>
+        <ellipse cx="-186" cy="540" rx="42" ry="26"/>
+        <ellipse cx="-126" cy="542" rx="34" ry="22"/>
+      </g>
+      <use href="#sakura-flower-light" transform="translate(-252,572) scale(1.1) rotate(24)"/>
+      <use href="#sakura-flower" transform="translate(-226,556) scale(1.2) rotate(50)"/>
+      <use href="#sakura-flower-light" transform="translate(-194,536) scale(1.25) rotate(14)"/>
+      <use href="#sakura-flower" transform="translate(-168,512) scale(1.2) rotate(40)"/>
+      <use href="#sakura-flower-light" transform="translate(-142,538) scale(1.15) rotate(62)"/>
+      <use href="#sakura-flower" transform="translate(-116,544) scale(1.05) rotate(30)"/>
+
+      <!-- Distant Left Torii Gate -->
+      <g fill="#c2455f" opacity="0.88" transform="translate(-295,622) scale(0.85)">
+        <rect x="0" y="0" width="7" height="62"/>
+        <rect x="50" y="0" width="7" height="62"/>
+        <rect x="-8" y="-6" width="73" height="7" rx="2"/>
+        <rect x="-3" y="10" width="63" height="5"/>
+      </g>
+    </g>
+
+    <!-- Background Mid-Distance Sakura Tree (Left-Center) -->
+    <g opacity="0.92">
+      <path d="M128 655 Q132 618 124 585 Q118 560 136 538" stroke="#8c4c5e" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+      <path d="M126 608 Q106 590 88 580" stroke="#8c4c5e" stroke-width="3.8" fill="none" stroke-linecap="round"/>
+      <path d="M128 592 Q150 572 170 564" stroke="#8c4c5e" stroke-width="3.8" fill="none" stroke-linecap="round"/>
+      <!-- Soft canopy base -->
+      <g fill="#f79bb9" opacity="0.75">
+        <ellipse cx="94" cy="574" rx="26" ry="18"/>
+        <ellipse cx="132" cy="546" rx="34" ry="22"/>
+        <ellipse cx="164" cy="564" rx="26" ry="18"/>
+      </g>
+      <!-- Detailed 5-petal flowers -->
+      <use href="#sakura-flower" transform="translate(86,574) scale(0.85) rotate(12)"/>
+      <use href="#sakura-flower-light" transform="translate(102,562) scale(0.95) rotate(35)"/>
+      <use href="#sakura-flower" transform="translate(122,542) scale(1.05) rotate(18)"/>
+      <use href="#sakura-flower-light" transform="translate(142,538) scale(0.95) rotate(52)"/>
+      <use href="#sakura-flower" transform="translate(158,554) scale(0.9) rotate(24)"/>
+      <use href="#sakura-flower-light" transform="translate(172,566) scale(0.8) rotate(60)"/>
+      <use href="#sakura-flower" transform="translate(132,562) scale(0.9) rotate(8)"/>
+      <use href="#sakura-flower-light" transform="translate(114,576) scale(0.8) rotate(44)"/>
+    </g>
+
+    <!-- Foreground Grand Sakura Tree (Left Side) -->
+    <g>
+      <!-- Sculpted dark cherry-wood trunk & graceful branches -->
+      <path d="M36 718 Q44 652 32 588 Q20 532 56 482" stroke="#6b3242" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <path d="M32 718 Q40 660 36 600" stroke="#854355" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <path d="M36 632 Q8 598 -28 576" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+      <path d="M36 596 Q76 562 118 544" stroke="#6b3242" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M74 568 Q94 544 114 532" stroke="#6b3242" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M38 546 Q6 512 -24 496" stroke="#6b3242" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <path d="M48 514 Q82 482 114 472" stroke="#6b3242" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M56 482 Q48 446 68 424" stroke="#6b3242" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Soft layered blossom foliage backdrop -->
+      <g fill="#f58eb2" opacity="0.72">
+        <ellipse cx="-26" cy="570" rx="34" ry="22"/>
+        <ellipse cx="22" cy="542" rx="44" ry="28"/>
+        <ellipse cx="94" cy="544" rx="40" ry="24"/>
+        <ellipse cx="-14" cy="496" rx="36" ry="24"/>
+        <ellipse cx="48" cy="466" rx="48" ry="30"/>
+        <ellipse cx="102" cy="476" rx="34" ry="22"/>
+      </g>
+      <g fill="#ffb5ce" opacity="0.65">
+        <ellipse cx="-20" cy="564" rx="26" ry="17"/>
+        <ellipse cx="26" cy="534" rx="34" ry="21"/>
+        <ellipse cx="92" cy="538" rx="30" ry="18"/>
+        <ellipse cx="48" cy="458" rx="38" ry="23"/>
+        <ellipse cx="98" cy="470" rx="26" ry="16"/>
+      </g>
+
+      <!-- Rich clusters of detailed 5-petal Sakura blossoms -->
+      <use href="#sakura-flower" transform="translate(-34,572) scale(1.1) rotate(15)"/>
+      <use href="#sakura-flower-light" transform="translate(-14,556) scale(1.25) rotate(42)"/>
+      <use href="#sakura-flower" transform="translate(8,574) scale(1.0) rotate(65)"/>
+      <use href="#sakura-flower-light" transform="translate(18,538) scale(1.3) rotate(10)"/>
+      <use href="#sakura-flower" transform="translate(42,548) scale(1.15) rotate(50)"/>
+      <use href="#sakura-flower-light" transform="translate(68,536) scale(1.2) rotate(25)"/>
+      <use href="#sakura-flower" transform="translate(92,546) scale(1.25) rotate(38)"/>
+      <use href="#sakura-flower-light" transform="translate(116,540) scale(1.05) rotate(12)"/>
+      <use href="#sakura-flower" transform="translate(106,560) scale(0.95) rotate(55)"/>
+      <use href="#sakura-flower" transform="translate(-26,498) scale(1.15) rotate(28)"/>
+      <use href="#sakura-flower-light" transform="translate(-4,484) scale(1.25) rotate(60)"/>
+      <use href="#sakura-flower" transform="translate(24,470) scale(1.35) rotate(18)"/>
+      <use href="#sakura-flower-light" transform="translate(52,442) scale(1.3) rotate(45)"/>
+      <use href="#sakura-flower" transform="translate(74,430) scale(1.15) rotate(22)"/>
+      <use href="#sakura-flower-light" transform="translate(76,464) scale(1.25) rotate(68)"/>
+      <use href="#sakura-flower" transform="translate(102,472) scale(1.2) rotate(30)"/>
+      <use href="#sakura-flower-light" transform="translate(120,484) scale(0.95) rotate(52)"/>
+      <use href="#sakura-flower" transform="translate(46,496) scale(1.2) rotate(14)"/>
+      <use href="#sakura-flower-light" transform="translate(22,510) scale(1.1) rotate(40)"/>
+    </g>
+
+    <!-- Foreground Graceful Sakura Tree Framing the Right Side -->
+    <g>
+      <path d="M388 712 Q378 652 388 594 Q396 544 366 498" stroke="#6b3242" stroke-width="11" fill="none" stroke-linecap="round"/>
+      <path d="M386 628 Q354 596 318 580" stroke="#6b3242" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+      <path d="M386 588 Q414 558 442 544" stroke="#6b3242" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M382 542 Q346 512 314 502" stroke="#6b3242" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M366 498 Q374 466 356 446" stroke="#6b3242" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+      <!-- Soft canopy base -->
+      <g fill="#f58eb2" opacity="0.72">
+        <ellipse cx="326" cy="576" rx="34" ry="21"/>
+        <ellipse cx="382" cy="544" rx="42" ry="26"/>
+        <ellipse cx="324" cy="500" rx="32" ry="20"/>
+        <ellipse cx="370" cy="468" rx="40" ry="25"/>
+      </g>
+      <g fill="#ffb5ce" opacity="0.65">
+        <ellipse cx="328" cy="570" rx="25" ry="15"/>
+        <ellipse cx="380" cy="538" rx="32" ry="20"/>
+        <ellipse cx="368" cy="462" rx="30" ry="18"/>
+      </g>
+
+      <!-- Detailed 5-petal blossoms -->
+      <use href="#sakura-flower-light" transform="translate(308,582) scale(1.0) rotate(20)"/>
+      <use href="#sakura-flower" transform="translate(330,568) scale(1.2) rotate(48)"/>
+      <use href="#sakura-flower-light" transform="translate(356,554) scale(1.15) rotate(14)"/>
+      <use href="#sakura-flower" transform="translate(382,538) scale(1.25) rotate(36)"/>
+      <use href="#sakura-flower-light" transform="translate(410,546) scale(1.1) rotate(62)"/>
+      <use href="#sakura-flower" transform="translate(314,504) scale(1.1) rotate(28)"/>
+      <use href="#sakura-flower-light" transform="translate(338,490) scale(1.2) rotate(54)"/>
+      <use href="#sakura-flower" transform="translate(362,462) scale(1.25) rotate(18)"/>
+      <use href="#sakura-flower-light" transform="translate(388,472) scale(1.15) rotate(44)"/>
+      <use href="#sakura-flower" transform="translate(356,442) scale(1.05) rotate(66)"/>
+    </g>
+
+    <!-- Far-Right Sakura Grove (Fills Wide Desktop Right Wing) -->
+    <g>
+      <!-- Mid-Right Sakura Tree -->
+      <path d="M585 698 Q592 642 580 588 Q570 542 602 498" stroke="#7a3b4d" stroke-width="10.5" fill="none" stroke-linecap="round"/>
+      <path d="M584 616 Q548 588 516 572" stroke="#7a3b4d" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M586 582 Q624 554 658 540" stroke="#7a3b4d" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <g fill="#f79bb9" opacity="0.72">
+        <ellipse cx="524" cy="568" rx="34" ry="22"/>
+        <ellipse cx="586" cy="536" rx="44" ry="28"/>
+        <ellipse cx="648" cy="540" rx="36" ry="22"/>
+      </g>
+      <use href="#sakura-flower" transform="translate(514,572) scale(1.1) rotate(16)"/>
+      <use href="#sakura-flower-light" transform="translate(544,554) scale(1.2) rotate(46)"/>
+      <use href="#sakura-flower" transform="translate(580,532) scale(1.3) rotate(22)"/>
+      <use href="#sakura-flower-light" transform="translate(604,506) scale(1.2) rotate(54)"/>
+      <use href="#sakura-flower" transform="translate(632,536) scale(1.2) rotate(32)"/>
+      <use href="#sakura-flower-light" transform="translate(660,544) scale(1.05) rotate(66)"/>
+
+      <!-- Outer Right Grand Sakura Tree -->
+      <path d="M780 715 Q770 645 784 575 Q794 520 756 468" stroke="#6b3242" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M780 625 Q742 592 704 572" stroke="#6b3242" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M778 585 Q824 548 870 530" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+      <path d="M772 528 Q736 492 702 476" stroke="#6b3242" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M764 495 Q804 462 840 450" stroke="#6b3242" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <g fill="#f58eb2" opacity="0.72">
+        <ellipse cx="712" cy="566" rx="40" ry="25"/>
+        <ellipse cx="782" cy="530" rx="52" ry="32"/>
+        <ellipse cx="854" cy="526" rx="44" ry="26"/>
+        <ellipse cx="756" cy="462" rx="50" ry="30"/>
+      </g>
+      <use href="#sakura-flower-light" transform="translate(702,568) scale(1.2) rotate(20)"/>
+      <use href="#sakura-flower" transform="translate(734,552) scale(1.3) rotate(48)"/>
+      <use href="#sakura-flower-light" transform="translate(772,526) scale(1.35) rotate(14)"/>
+      <use href="#sakura-flower" transform="translate(808,518) scale(1.25) rotate(56)"/>
+      <use href="#sakura-flower-light" transform="translate(848,528) scale(1.3) rotate(26)"/>
+      <use href="#sakura-flower" transform="translate(714,482) scale(1.2) rotate(36)"/>
+      <use href="#sakura-flower-light" transform="translate(752,442) scale(1.35) rotate(18)"/>
+      <use href="#sakura-flower" transform="translate(792,456) scale(1.25) rotate(50)"/>
+      <use href="#sakura-flower-light" transform="translate(836,448) scale(1.15) rotate(62)"/>
+
+      <!-- Far-Right Torii Gate -->
+      <g fill="#c2455f" opacity="0.88" transform="translate(665,620) scale(0.85)">
+        <rect x="0" y="0" width="7" height="62"/>
+        <rect x="50" y="0" width="7" height="62"/>
+        <rect x="-8" y="-6" width="73" height="7" rx="2"/>
+        <rect x="-3" y="10" width="63" height="5"/>
+      </g>
+    </g>
 
     <!-- Torii gate -->
     <g fill="#c2455f" transform="translate(0,6)">
@@ -135,29 +500,121 @@
       <rect x="293" y="628" width="63" height="5"/>
     </g>
 
-    <!-- Sakura branch, top right -->
-    <path d="M420 40 Q330 70 270 130" stroke="#8a4a5a" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M350 62 Q320 60 300 85" stroke="#8a4a5a" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <g fill="#ffb7cf">
-      <circle cx="270" cy="130" r="11"/><circle cx="288" cy="112" r="9"/>
-      <circle cx="310" cy="98" r="11"/><circle cx="300" cy="84" r="8"/>
-      <circle cx="335" cy="76" r="10"/><circle cx="360" cy="58" r="9"/>
-      <circle cx="385" cy="48" r="11"/>
+    <!-- Hanging Japanese paper lanterns (chochin) across the wide canopy -->
+    <!-- Far-Left Lantern (Desktop Wing) -->
+    <g class="lantern l2" style="transform-origin:-260px 0">
+      <line x1="-260" y1="-20" x2="-260" y2="104" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
+      <circle cx="-260" cy="104" r="2.2" fill="#d4889c"/>
+      <circle class="lglow" cx="-260" cy="128" r="36" fill="url(#lampG)"/>
+      <rect x="-274" y="108" width="28" height="40" rx="13" fill="#ff7090"/>
+      <ellipse cx="-260" cy="128" rx="9" ry="14" fill="#ffd9a8" opacity="0.55"/>
+      <path d="M-273 117 Q-260 120 -247 117 M-274 128 Q-260 131 -246 128 M-273 139 Q-260 142 -247 139" stroke="#b83b58" stroke-width="1" fill="none" opacity="0.6"/>
+      <rect x="-269" y="105" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <rect x="-269" y="147" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <line x1="-260" y1="151" x2="-260" y2="163" stroke="#c2455f" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="-260" cy="153" r="1.8" fill="#ffd180"/>
     </g>
-    <g fill="#ffe0ea">
-      <circle cx="272" cy="128" r="4"/><circle cx="312" cy="96" r="4"/>
-      <circle cx="337" cy="74" r="4"/><circle cx="387" cy="46" r="4"/>
+
+    <!-- Mid-Left Lantern (Desktop Wing) -->
+    <g class="lantern l3" style="transform-origin:-120px 0">
+      <line x1="-120" y1="-20" x2="-120" y2="78" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
+      <circle cx="-120" cy="78" r="2" fill="#d4889c"/>
+      <circle class="lglow" cx="-120" cy="98" r="30" fill="url(#lampG)"/>
+      <rect x="-132" y="81" width="24" height="34" rx="11" fill="#ff829e"/>
+      <ellipse cx="-120" cy="98" rx="7.5" ry="11" fill="#ffe2b8" opacity="0.55"/>
+      <path d="M-131 89 Q-120 92 -109 89 M-132 98 Q-120 101 -108 98 M-131 107 Q-120 110 -109 107" stroke="#c44764" stroke-width="0.9" fill="none" opacity="0.55"/>
+      <rect x="-128" y="79" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <rect x="-128" y="114" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <line x1="-120" y1="117.5" x2="-120" y2="127" stroke="#c2455f" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="-120" cy="119" r="1.5" fill="#ffd180"/>
+    </g>
+
+    <!-- Top-Left Lantern 1 -->
+    <g class="lantern" style="transform-origin:42px 0">
+      <line x1="42" y1="-20" x2="42" y2="112" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
+      <circle cx="42" cy="112" r="2.2" fill="#d4889c"/>
+      <circle class="lglow" cx="42" cy="136" r="38" fill="url(#lampG)"/>
+      <!-- Lantern body -->
+      <rect x="28" y="116" width="28" height="40" rx="13" fill="#ff6688"/>
+      <!-- Warm inner candle glow -->
+      <ellipse cx="42" cy="136" rx="9" ry="14" fill="#ffd9a8" opacity="0.55"/>
+      <!-- Paper ribs -->
+      <path d="M29 125 Q42 128 55 125 M28 136 Q42 139 56 136 M29 147 Q42 150 55 147" stroke="#b83b58" stroke-width="1" fill="none" opacity="0.6"/>
+      <!-- Top & bottom wooden caps -->
+      <rect x="33" y="113" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <rect x="33" y="155" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <!-- Silk tassel -->
+      <line x1="42" y1="159" x2="42" y2="171" stroke="#c2455f" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="42" cy="161" r="1.8" fill="#ffd180"/>
+    </g>
+
+    <!-- Top-Left Lantern 2 (higher & slightly smaller for depth) -->
+    <g class="lantern l2" style="transform-origin:92px 0">
+      <line x1="92" y1="-20" x2="92" y2="74" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
+      <circle cx="92" cy="74" r="2" fill="#d4889c"/>
+      <circle class="lglow" cx="92" cy="94" r="30" fill="url(#lampG)"/>
+      <rect x="80" y="77" width="24" height="34" rx="11" fill="#ff829e"/>
+      <ellipse cx="92" cy="94" rx="7.5" ry="11" fill="#ffe2b8" opacity="0.55"/>
+      <path d="M81 85 Q92 88 103 85 M80 94 Q92 97 104 94 M81 103 Q92 106 103 103" stroke="#c44764" stroke-width="0.9" fill="none" opacity="0.55"/>
+      <rect x="84" y="75" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <rect x="84" y="110" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <line x1="92" y1="113.5" x2="92" y2="123" stroke="#c2455f" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="92" cy="115" r="1.5" fill="#ffd180"/>
+    </g>
+
+    <!-- Top-Right Lantern 3 -->
+    <g class="lantern l3" style="transform-origin:356px 0">
+      <line x1="356" y1="-20" x2="356" y2="96" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
+      <circle cx="356" cy="96" r="2.2" fill="#d4889c"/>
+      <circle class="lglow" cx="356" cy="118" r="35" fill="url(#lampG)"/>
+      <rect x="343" y="100" width="26" height="37" rx="12" fill="#ff7090"/>
+      <ellipse cx="356" cy="118.5" rx="8.5" ry="12.5" fill="#ffd9a8" opacity="0.55"/>
+      <path d="M344 109 Q356 112 368 109 M343 118.5 Q356 121.5 369 118.5 M344 128 Q356 131 368 128" stroke="#b83b58" stroke-width="1" fill="none" opacity="0.6"/>
+      <rect x="348" y="97.5" width="16" height="3.8" rx="1.5" fill="#6e283c"/>
+      <rect x="348" y="136.5" width="16" height="3.8" rx="1.5" fill="#6e283c"/>
+      <line x1="356" y1="140.3" x2="356" y2="151" stroke="#c2455f" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="356" cy="142" r="1.6" fill="#ffd180"/>
+    </g>
+
+    <!-- Mid-Right Lantern (Desktop Wing) -->
+    <g class="lantern" style="transform-origin:520px 0">
+      <line x1="520" y1="-20" x2="520" y2="76" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
+      <circle cx="520" cy="76" r="2" fill="#d4889c"/>
+      <circle class="lglow" cx="520" cy="96" r="30" fill="url(#lampG)"/>
+      <rect x="508" y="79" width="24" height="34" rx="11" fill="#ff829e"/>
+      <ellipse cx="520" cy="96" rx="7.5" ry="11" fill="#ffe2b8" opacity="0.55"/>
+      <path d="M509 87 Q520 90 531 87 M508 96 Q520 99 532 96 M509 105 Q520 108 531 105" stroke="#c44764" stroke-width="0.9" fill="none" opacity="0.55"/>
+      <rect x="512" y="77" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <rect x="512" y="112" width="16" height="3.5" rx="1.5" fill="#6e283c"/>
+      <line x1="520" y1="115.5" x2="520" y2="125" stroke="#c2455f" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="520" cy="117" r="1.5" fill="#ffd180"/>
+    </g>
+
+    <!-- Far-Right Lantern (Desktop Wing) -->
+    <g class="lantern l2" style="transform-origin:660px 0">
+      <line x1="660" y1="-20" x2="660" y2="108" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
+      <circle cx="660" cy="108" r="2.2" fill="#d4889c"/>
+      <circle class="lglow" cx="660" cy="132" r="36" fill="url(#lampG)"/>
+      <rect x="646" y="112" width="28" height="40" rx="13" fill="#ff6688"/>
+      <ellipse cx="660" cy="132" rx="9" ry="14" fill="#ffd9a8" opacity="0.55"/>
+      <path d="M647 121 Q660 124 673 121 M646 132 Q660 135 674 132 M647 143 Q660 146 673 143" stroke="#b83b58" stroke-width="1" fill="none" opacity="0.6"/>
+      <rect x="651" y="109" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <rect x="651" y="151" width="18" height="4" rx="1.5" fill="#6e283c"/>
+      <line x1="660" y1="155" x2="660" y2="167" stroke="#c2455f" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="660" cy="157" r="1.8" fill="#ffd180"/>
     </g>
   </svg>
 </div>
 
 <div id="petals"></div>
+<div id="fireflies"></div>
+<div id="bursts"></div>
 
 <section class="hero">
   <div class="kanji">&#26085;&#26412;</div>
-  <h1>Made in Japan</h1>
-  <p>a little something, just for you</p>
-  <div class="hint">scroll down slowly &#8595;</div>
+  <h1>under the sakura sky</h1>
+  <p>tap anywhere, then scroll down slowly</p>
+  <div class="hint">scroll down &#8595;</div>
 </section>
 
 <section class="lyrics">
@@ -189,28 +646,168 @@
   <div class="line">Fourth line of stanza four goes here</div>
 </section>
 
-<div class="end" id="end">made with love &#10084;</div>
+<div class="end" id="end">always yours &#10084;<small>a quiet little piece of my heart</small></div>
+
+<button id="musicBtn" aria-label="Toggle music">&#9835; play</button>
+<div id="tapHint">&#10024; tap anywhere</div>
 
 <script>
+  // Audio & Smart Auto-Scroll Sync
+  const song = document.getElementById('song');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = false;
+  let userScrolling = false;
+  let resumeTimer = null;
+  let scrollExactY = window.scrollY;
+  let lastFrameTime = null;
+
+  function setMusicState(playing) {
+    isPlaying = playing;
+    musicBtn.innerHTML = playing ? '&#9835; playing' : '&#9835; paused';
+  }
+
+  function startExperience() {
+    scrollExactY = window.scrollY;
+    lastFrameTime = performance.now();
+    song.play().then(() => {
+      setMusicState(true);
+    }).catch(() => {
+      // Fallback if audio file is missing or blocked: still auto-scroll smoothly
+      setMusicState(true);
+    });
+  }
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      song.pause();
+      setMusicState(false);
+    } else {
+      startExperience();
+    }
+  });
+
+  // Pause auto-scroll gently whenever viewer manually scrolls, then resume after 3.5s
+  function pauseAutoScrollTemporarily() {
+    userScrolling = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => {
+      scrollExactY = window.scrollY;
+      lastFrameTime = performance.now();
+      userScrolling = false;
+    }, 3500);
+  }
+
+  window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
+  window.addEventListener('touchmove', pauseAutoScrollTemporarily, { passive: true });
+
+  // Smoothly glide down in sync with the song's duration
+  function autoScrollLoop(now) {
+    if (isPlaying && !userScrolling) {
+      if (lastFrameTime !== null) {
+        const dt = (now - lastFrameTime) / 1000;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        // Calculate speed from song duration (or default 155s for Made in Japan)
+        const duration = (song.duration && isFinite(song.duration) && song.duration > 10) ? song.duration : 155;
+        const pxPerSec = maxScroll / Math.max(duration - 4, 20);
+
+        if (scrollExactY < maxScroll) {
+          scrollExactY = Math.min(maxScroll, scrollExactY + pxPerSec * dt);
+          window.scrollTo({ top: scrollExactY, behavior: 'auto' });
+        }
+      }
+    }
+    lastFrameTime = now;
+    requestAnimationFrame(autoScrollLoop);
+  }
+  requestAnimationFrame(autoScrollLoop);
+
+  song.addEventListener('ended', () => setMusicState(false));
+
+  // Welcome screen
+  const welcome = document.getElementById('welcome');
+  const openBtn = document.getElementById('openBtn');
+  openBtn.addEventListener('click', () => {
+    welcome.classList.add('hide');
+    startExperience();
+    setTimeout(() => { welcome.style.display = 'none'; }, 1400);
+  });
+
   // Falling sakura petals
   const box = document.getElementById('petals');
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < 24; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
     const size = 8 + Math.random() * 12;
     p.style.width = size + 'px';
     p.style.height = size + 'px';
     p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = 9 + Math.random() * 10 + 's';
-    p.style.animationDelay = -Math.random() * 15 + 's';
+    p.style.animationDuration = (9 + Math.random() * 10) + 's';
+    p.style.animationDelay = (-Math.random() * 15) + 's';
     box.appendChild(p);
   }
 
+  // Glowing fireflies
+  const ff = document.getElementById('fireflies');
+  for (let i = 0; i < 16; i++) {
+    const f = document.createElement('div');
+    f.className = 'firefly';
+    f.style.left = Math.random() * 100 + 'vw';
+    f.style.top = (35 + Math.random() * 60) + 'vh';
+    f.style.animationDuration = (5 + Math.random() * 6) + 's, ' + (2 + Math.random() * 2) + 's';
+    f.style.animationDelay = (-Math.random() * 6) + 's';
+    ff.appendChild(f);
+  }
+
+  // Tap anywhere: heart + petal burst
+  const bursts = document.getElementById('bursts');
+  function magic(x, y) {
+    const h = document.createElement('div');
+    h.className = 'floatheart';
+    h.textContent = '\u2764';
+    h.style.left = (x - 10) + 'px';
+    h.style.top = (y - 10) + 'px';
+    bursts.appendChild(h);
+    setTimeout(() => h.remove(), 2500);
+
+    for (let i = 0; i < 10; i++) {
+      const b = document.createElement('div');
+      b.className = 'burst-petal';
+      const a = Math.random() * Math.PI * 2;
+      const d = 50 + Math.random() * 70;
+      b.style.left = x + 'px';
+      b.style.top = y + 'px';
+      b.style.setProperty('--dx', (Math.cos(a) * d) + 'px');
+      b.style.setProperty('--dy', (Math.sin(a) * d) + 'px');
+      bursts.appendChild(b);
+      setTimeout(() => b.remove(), 1700);
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#welcome') && e.target.id !== 'musicBtn') magic(e.clientX, e.clientY);
+  });
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    if (t && !e.target.closest('#welcome') && e.target.id !== 'musicBtn') magic(t.clientX, t.clientY);
+  }, { passive: true });
+
   // Fade in each lyric line as it scrolls into view
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-  }, { threshold: 0.6 });
-  document.querySelectorAll('.line, .end').forEach(el => obs.observe(el));
+    entries.forEach((e) => {
+      if (e.isIntersecting) e.target.classList.add('show');
+    });
+  }, { threshold: 0.45 });
+  document.querySelectorAll('.line, .end').forEach((el) => obs.observe(el));
+
+  // Hide the tap hint after a few seconds
+  setTimeout(() => {
+    const t = document.getElementById('tapHint');
+    if (t) {
+      t.style.transition = 'opacity 1s ease';
+      t.style.opacity = '0';
+    }
+  }, 6000);
 </script>
 </body>
 </html>
