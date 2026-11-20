@@ -108,16 +108,13 @@
   .hero h1 {
     font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
     font-size: clamp(2.2rem, 8vw, 3.6rem); color: #a84162;
-    text-shadow: 0 0 18px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 194, 214, 0.7);
-    will-change: transform, opacity;
-    animation: heroPulse 3.5s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate;
   }
   .hero .for { margin-top: 16px; font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.6rem); color: #c2456f; text-shadow: 0 0 14px #fff; }
   .hero p { margin-top: 10px; font-size: 0.95rem; letter-spacing: 2px; color: #8a4a62; }
-  .hint { position: absolute; bottom: 36px; font-size: 0.85rem; color: #8a4a62; will-change: transform; animation: bob 2s ease-in-out infinite; }
-  @keyframes bob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, 10px, 0); } }
+  .hint { position: absolute; bottom: 36px; font-size: 0.85rem; color: #8a4a62; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
   @keyframes glow { from { text-shadow: 0 0 8px #fff; } to { text-shadow: 0 0 22px #fff, 0 0 34px #ffc2d6; } }
-  @keyframes heroPulse { from { opacity: 0.88; transform: scale(0.995); } to { opacity: 1; transform: scale(1.01); } }
 
   /* ===== Lyrics ===== */
   .lyrics {
@@ -128,35 +125,34 @@
     font-family: 'Playfair Display', serif; font-style: italic;
     font-size: clamp(1.25rem, 5vw, 1.7rem); line-height: 1.7;
     margin: 14px 0; color: #8f3a5a;
-    text-shadow: 0 1px 8px rgba(255,255,255,0.85);
-    opacity: 0; transform: translate3d(0, 16px, 0);
-    transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    text-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 4px rgba(255,255,255,0.8);
+    opacity: 0; transform: translateY(18px); filter: blur(6px);
+    transition: opacity 2.2s ease, transform 2.2s ease, filter 2.2s ease;
   }
-  .line.show { opacity: 1; transform: translate3d(0, 0, 0); }
+  .line.show { opacity: 1; transform: translateY(0); filter: blur(0); }
   .gap { height: 14vh; }
   .end {
     position: relative; z-index: 2; text-align: center; padding: 0 24px 22vh;
     font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.4rem); color: #a84162;
-    text-shadow: 0 1px 8px rgba(255,255,255,0.9);
-    opacity: 0; transform: translate3d(0, 12px, 0);
-    transition: opacity 1.4s ease, transform 1.4s ease;
+    text-shadow: 0 0 12px rgba(255,255,255,0.95);
+    opacity: 0; transition: opacity 3s ease;
   }
-  .end.show { opacity: 1; transform: translate3d(0, 0, 0); }
+  .end.show { opacity: 1; }
   .end small { display: block; margin-top: 10px; font-family: 'Quicksand', sans-serif; font-size: 0.85rem; letter-spacing: 2px; color: #8a4a62; }
 
   /* Music note, floating bottom-right */
   #tapHint {
     position: fixed; bottom: 18px; right: 18px; z-index: 50;
-    font-size: 0.75rem; color: #8a4a62; background: rgba(255,255,255,0.82);
-    padding: 6px 12px; border-radius: 20px;
+    font-size: 0.75rem; color: #8a4a62; background: rgba(255,255,255,0.6);
+    padding: 6px 12px; border-radius: 20px; backdrop-filter: blur(6px);
   }
   #musicBtn {
     position: fixed; bottom: 18px; left: 18px; z-index: 55;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.85); color: #8a4a62;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.65); color: #8a4a62;
     font-family: 'Quicksand', sans-serif; font-size: 0.78rem; font-weight: 500;
-    padding: 7px 14px; border-radius: 24px;
-    cursor: pointer; box-shadow: 0 4px 12px rgba(168, 65, 98, 0.12);
+    padding: 7px 14px; border-radius: 24px; backdrop-filter: blur(8px);
+    cursor: pointer; box-shadow: 0 4px 14px rgba(168, 65, 98, 0.14);
     transition: transform 0.2s ease, background 0.2s ease;
   }
   #musicBtn:active { transform: scale(0.95); }
@@ -623,31 +619,30 @@
 
 <section class="lyrics">
   <!-- STANZA 1 -->
-  <div class="line">First line of stanza one goes here</div>
-  <div class="line">Second line of stanza one goes here</div>
-  <div class="line">Third line of stanza one goes here</div>
-  <div class="line">Fourth line of stanza one goes here</div>
+  <div class="line">My transistor radio comes from far away</div>
+  <div class="line">And when it's night over here, over there it's breaking day</div>
+  <div class="line">I remember all the good times I had walking in the sand</div>
+  <div class="line">With a beautiful girl that I met made in Japan</div>
   <div class="gap"></div>
 
   <!-- STANZA 2 -->
-  <div class="line">First line of stanza two goes here</div>
-  <div class="line">Second line of stanza two goes here</div>
-  <div class="line">Third line of stanza two goes here</div>
-  <div class="line">Fourth line of stanza two goes here</div>
+  <div class="line">That beauty of her face was beyond my wildest dreams</div>
+  <div class="line">Like cherry blossoms blooming in the mountains in the early spring</div>
+  <div class="line">As we walked by the river and she softly took hold of my hand</div>
+  <div class="line">That's when I fell deep in love with a girl made in Japan</div>
   <div class="gap"></div>
 
   <!-- STANZA 3 -->
-  <div class="line">First line of stanza three goes here</div>
-  <div class="line">Second line of stanza three goes here</div>
-  <div class="line">Third line of stanza three goes here</div>
-  <div class="line">Fourth line of stanza three goes here</div>
+  <div class="line">In the dark of night, we would lay on Tokyo Bay</div>
+  <div class="line">And the singing of the birds woke us up at the break of day</div>
+  <div class="line">Her smiling eyes always seemed to try to understand</div>
+  <div class="line">All the love in my heart for the girl made in Japan</div>
   <div class="gap"></div>
 
   <!-- STANZA 4 -->
-  <div class="line">First line of stanza four goes here</div>
-  <div class="line">Second line of stanza four goes here</div>
-  <div class="line">Third line of stanza four goes here</div>
-  <div class="line">Fourth line of stanza four goes here</div>
+  <div class="line">She cried when she said she'd been promised to another man</div>
+  <div class="line">That's when I left my heart with the girl made in Japan</div>
+  <div class="line">Yes, my heart will always be with the girl made in Japan</div>
 </section>
 
 <div class="end" id="end">always yours &#10084;<small>a quiet little piece of my heart</small></div>
@@ -706,21 +701,18 @@
   window.addEventListener('touchmove', pauseAutoScrollTemporarily, { passive: true });
 
   // Smoothly glide down in sync with the song's duration
-  let maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
-  window.addEventListener('resize', () => {
-    maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
-  }, { passive: true });
-
   function autoScrollLoop(now) {
     if (isPlaying && !userScrolling) {
       if (lastFrameTime !== null) {
-        const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+        const dt = (now - lastFrameTime) / 1000;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        // Calculate speed from song duration (or default 155s for Made in Japan)
         const duration = (song.duration && isFinite(song.duration) && song.duration > 10) ? song.duration : 155;
-        const pxPerSec = maxScrollCache / Math.max(duration - 4, 20);
+        const pxPerSec = maxScroll / Math.max(duration - 4, 20);
 
-        if (scrollExactY < maxScrollCache - 1) {
-          scrollExactY = Math.min(maxScrollCache, scrollExactY + pxPerSec * dt);
-          window.scrollTo(0, scrollExactY);
+        if (scrollExactY < maxScroll) {
+          scrollExactY = Math.min(maxScroll, scrollExactY + pxPerSec * dt);
+          window.scrollTo({ top: scrollExactY, behavior: 'auto' });
         }
       }
     }
@@ -736,10 +728,7 @@
   const openBtn = document.getElementById('openBtn');
   openBtn.addEventListener('click', () => {
     welcome.classList.add('hide');
-    // Wait a moment for welcome fade-out before starting scroll so entrance feels effortless
-    setTimeout(() => {
-      startExperience();
-    }, 650);
+    startExperience();
     setTimeout(() => { welcome.style.display = 'none'; }, 1400);
   });
 
@@ -802,15 +791,12 @@
     if (t && !e.target.closest('#welcome') && e.target.id !== 'musicBtn') magic(t.clientX, t.clientY);
   }, { passive: true });
 
-  // Fade in each lyric line as it scrolls into view (unobserve once shown to save CPU/GPU at the end)
+  // Fade in each lyric line as it scrolls into view
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('show');
-        obs.unobserve(e.target);
-      }
+      if (e.isIntersecting) e.target.classList.add('show');
     });
-  }, { threshold: 0.25 });
+  }, { threshold: 0.45 });
   document.querySelectorAll('.line, .end').forEach((el) => obs.observe(el));
 
   // Hide the tap hint after a few seconds
