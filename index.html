@@ -4,38 +4,65 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Tanishka</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Quicksand:wght@300;400;500&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500&family=Homemade+Apple&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   body {
-    font-family: 'Quicksand', sans-serif;
-    color: #7a4a5a;
-    background: linear-gradient(180deg, #e9b8da 0%, #ffd0e0 35%, #ffe3d6 70%, #d98aa8 100%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #5e3142;
+    background: linear-gradient(180deg, #e5b7d4 0%, #fbd0de 35%, #ffe5d8 70%, #d4839f 100%);
     background-attachment: fixed;
     overflow-x: hidden;
     min-height: 100vh;
+  }
+
+  /* Subtle warm paper-grain texture for an editorial, handcrafted feel */
+  #grain {
+    position: fixed; inset: 0; z-index: 45; pointer-events: none; opacity: 0.032;
+    background-image: radial-gradient(#5e3142 0.75px, transparent 0.75px);
+    background-size: 14px 14px;
   }
 
   /* ===== Welcome screen ===== */
   #welcome {
     position: fixed; inset: 0; z-index: 100;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 24px;
-    background: linear-gradient(160deg, #ffd6e3, #ffe9d9 50%, #ffc9dc);
-    transition: opacity 1.4s ease, visibility 1.4s;
+    text-align: center; padding: 28px;
+    background: radial-gradient(circle at 50% 42%, #fff5f8 0%, #ffd8e6 55%, #f7bdd1 100%);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.4s;
   }
   #welcome.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-  #welcome .hi { font-family: 'Dancing Script', cursive; font-size: clamp(2.4rem, 11vw, 4rem); color: #b5506f; animation: glow 3s ease-in-out infinite alternate; }
-  #welcome .sub { margin-top: 12px; font-size: 1rem; color: #a8697f; letter-spacing: 1px; }
-  #openBtn {
-    margin-top: 34px; padding: 14px 34px; border: none; border-radius: 40px;
-    background: linear-gradient(135deg, #ff9fbd, #ff7fa5); color: #fff;
-    font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 500; letter-spacing: 1px;
-    box-shadow: 0 8px 24px rgba(255,127,165,0.45); cursor: pointer;
-    animation: beat 1.8s ease-in-out infinite;
+  #welcome .envelope-card {
+    max-width: 380px; width: 100%;
+    padding: 40px 28px 36px;
+    border-radius: 28px;
+    background: rgba(255, 252, 253, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 20px 50px rgba(158, 66, 98, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
-  @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+  #welcome .hi {
+    font-family: 'Homemade Apple', cursive;
+    font-size: clamp(1.55rem, 6.5vw, 2.1rem);
+    color: #9e3d5d;
+    line-height: 1.5;
+  }
+  #welcome .sub {
+    margin-top: 14px; font-size: 0.92rem; font-weight: 400;
+    color: #8a5266; letter-spacing: 0.6px; line-height: 1.6;
+  }
+  #openBtn {
+    margin-top: 30px; padding: 13px 32px; border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 40px;
+    background: linear-gradient(135deg, #f285a7 0%, #df658b 100%); color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 500; letter-spacing: 0.8px;
+    box-shadow: 0 10px 26px rgba(223, 101, 139, 0.38); cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: beat 2.4s ease-in-out infinite;
+  }
+  #openBtn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 14px 30px rgba(223, 101, 139, 0.45); }
+  #openBtn:active { transform: scale(0.97); }
+  @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
 
   /* ===== Fixed Japan scene ===== */
   #scene {
@@ -43,21 +70,33 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background: linear-gradient(180deg, #e9b8da 0%, #ffd0e0 35%, #ffe3d6 70%, #f7b8cd 100%);
+    background: linear-gradient(180deg, #e5b7d4 0%, #fbd0de 35%, #ffe5d8 70%, #f5b4ca 100%);
   }
   #scene svg { width: 100%; height: 100%; display: block; }
   .sun-glow { animation: pulse 6s ease-in-out infinite alternate; }
   @keyframes pulse { from { opacity: 0.7; } to { opacity: 1; } }
-  .cloud { animation: drift 40s linear infinite; }
-  .cloud.c2 { animation-duration: 60s; animation-delay: -20s; }
+  .cloud { animation: drift 46s linear infinite; }
+  .cloud.c2 { animation-duration: 68s; animation-delay: -22s; }
   @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(1400px); } }
-  .twinkle { animation: tw 2.5s ease-in-out infinite alternate; }
-  @keyframes tw { from { opacity: 0.2; } to { opacity: 1; } }
-  .lantern { animation: sway 4s ease-in-out infinite alternate; transform-origin: 50% 0; }
-  .lantern.l2 { animation-delay: -1.5s; animation-duration: 5s; }
+  .twinkle { animation: tw 2.8s ease-in-out infinite alternate; }
+  @keyframes tw { from { opacity: 0.25; } to { opacity: 1; } }
+  .lantern { animation: sway 4.5s ease-in-out infinite alternate; transform-origin: 50% 0; }
+  .lantern.l2 { animation-delay: -1.5s; animation-duration: 5.2s; }
   .lantern.l3 { animation-delay: -3s; }
-  @keyframes sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
-  .lglow { animation: tw 3s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
+  .lglow { animation: tw 3.2s ease-in-out infinite alternate; }
+
+  /* Delicate shooting star */
+  .shooting-star {
+    stroke: #fff; stroke-width: 1.5; stroke-linecap: round; opacity: 0;
+    animation: shoot 11s ease-in-out infinite;
+  }
+  @keyframes shoot {
+    0%, 72% { opacity: 0; transform: translate(0, 0); }
+    76% { opacity: 0.95; }
+    84% { opacity: 0; transform: translate(-180px, 95px); }
+    100% { opacity: 0; transform: translate(-180px, 95px); }
+  }
 
   #petals, #fireflies, #bursts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
   #petals { z-index: 1; }
@@ -65,7 +104,7 @@
   #bursts { z-index: 60; }
   .petal {
     position: absolute; top: -30px;
-    background: radial-gradient(circle at 30% 30%, #fff 0%, #ffc2d6 60%, #ff9fbd 100%);
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #ffc4d8 60%, #f598b7 100%);
     border-radius: 150% 0 150% 0; opacity: 0.85;
     animation: fall linear infinite;
   }
@@ -75,88 +114,270 @@
     100% { transform: translateY(110vh) translateX(80px) rotate(540deg); opacity: 0.2; }
   }
   .firefly {
-    position: absolute; width: 6px; height: 6px; border-radius: 50%;
-    background: #fff6c9; box-shadow: 0 0 10px 4px rgba(255,236,150,0.8);
-    animation: float ease-in-out infinite alternate, blink 2.4s ease-in-out infinite alternate;
+    position: absolute; width: 5px; height: 5px; border-radius: 50%;
+    background: #fff7d1; box-shadow: 0 0 10px 3px rgba(255, 236, 150, 0.78);
+    animation: float ease-in-out infinite alternate, blink 2.6s ease-in-out infinite alternate;
   }
-  @keyframes float { from { transform: translate(0,0); } to { transform: translate(40px,-60px); } }
+  @keyframes float { from { transform: translate(0,0); } to { transform: translate(35px,-55px); } }
   @keyframes blink { from { opacity: 0.15; } to { opacity: 1; } }
   .burst-petal {
-    position: absolute; width: 12px; height: 12px;
-    background: radial-gradient(circle at 30% 30%, #fff, #ff9fbd);
+    position: absolute; width: 11px; height: 11px;
+    background: radial-gradient(circle at 30% 30%, #fff, #f797b7);
     border-radius: 150% 0 150% 0;
-    animation: burst 1.6s ease-out forwards;
+    animation: burst 1.5s ease-out forwards;
   }
   @keyframes burst {
     from { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
     to { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(0.4); opacity: 0; }
   }
   .floatheart {
-    position: absolute; font-size: 22px; color: #ff6f9c;
-    animation: rise 2.4s ease-out forwards;
+    position: absolute; font-size: 20px; color: #e8648e;
+    animation: rise 2.3s ease-out forwards;
   }
-  @keyframes rise { from { transform: translateY(0) scale(0.6); opacity: 1; } to { transform: translateY(-160px) scale(1.3); opacity: 0; } }
+  @keyframes rise { from { transform: translateY(0) scale(0.6); opacity: 1; } to { transform: translateY(-150px) scale(1.25); opacity: 0; } }
 
   /* ===== Hero ===== */
   .hero {
     position: relative; z-index: 2;
     height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: flex-start; text-align: center;
-    padding: 16vh 24px 0;
+    padding: 15vh 24px 0;
   }
-  .kanji { font-size: 1rem; letter-spacing: 8px; color: #b5506f; opacity: 0.85; margin-bottom: 10px; }
   .hero h1 {
-    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(2.2rem, 8vw, 3.6rem); color: #a84162;
-    text-shadow: 0 0 18px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 194, 214, 0.7);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+    font-size: clamp(2.5rem, 8.5vw, 4.1rem); color: #8f3252;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 18px rgba(255, 255, 255, 0.95);
     will-change: transform, opacity;
-    animation: heroPulse 3.5s ease-in-out infinite alternate;
+    animation: heroPulse 3.8s ease-in-out infinite alternate;
   }
-  .hero .for { margin-top: 16px; font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.6rem); color: #c2456f; text-shadow: 0 0 14px #fff; }
-  .hero p { margin-top: 10px; font-size: 0.95rem; letter-spacing: 2px; color: #8a4a62; }
-  .hint { position: absolute; bottom: 36px; font-size: 0.85rem; color: #8a4a62; will-change: transform; animation: bob 2s ease-in-out infinite; }
-  @keyframes bob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, 10px, 0); } }
-  @keyframes glow { from { text-shadow: 0 0 8px #fff; } to { text-shadow: 0 0 22px #fff, 0 0 34px #ffc2d6; } }
-  @keyframes heroPulse { from { opacity: 0.88; transform: scale(0.995); } to { opacity: 1; transform: scale(1.01); } }
+  .hero .divider {
+    width: 64px; height: 1px; margin: 16px auto 14px;
+    background: linear-gradient(90deg, transparent, #b85676, transparent);
+  }
+  .hero p {
+    font-size: 0.88rem; font-weight: 400; letter-spacing: 2.2px;
+    text-transform: lowercase; color: #7d3e54;
+  }
+  .hint {
+    position: absolute; bottom: 38px; font-size: 0.8rem; letter-spacing: 1.5px;
+    color: #7d3e54; will-change: transform; animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, 9px, 0); } }
+  @keyframes heroPulse { from { opacity: 0.9; transform: scale(0.996); } to { opacity: 1; transform: scale(1.008); } }
 
-  /* ===== Lyrics ===== */
-  .lyrics {
+  /* ===== Lyrics Stanza Cards (Washi Paper Style) ===== */
+  .main-stage {
     position: relative; z-index: 2;
-    max-width: 520px; margin: 0 auto; padding: 20vh 28px 30vh; text-align: center;
+    max-width: 1200px; margin: 0 auto;
+    padding: 14vh 24px 22vh;
+  }
+  .lyrics {
+    width: 100%; max-width: 560px; margin: 0 auto; text-align: center;
+  }
+  .stanza-card {
+    position: relative;
+    padding: 30px 24px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, rgba(255, 250, 252, 0.62) 0%, rgba(255, 242, 247, 0.46) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    box-shadow: 0 14px 36px rgba(143, 50, 82, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    transition: transform 0.6s ease, background 0.6s ease;
+  }
+  .stanza-num {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 0.85rem; letter-spacing: 3px; color: #b05674;
+    margin-bottom: 12px; opacity: 0.85;
   }
   .line {
-    font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: clamp(1.25rem, 5vw, 1.7rem); line-height: 1.7;
-    margin: 14px 0; color: #8f3a5a;
-    text-shadow: 0 1px 8px rgba(255,255,255,0.85);
-    opacity: 0; transform: translate3d(0, 16px, 0);
-    transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+    font-size: clamp(1.3rem, 4.8vw, 1.72rem); line-height: 1.65;
+    margin: 12px 0; color: #6e2842;
+    text-shadow: 0 1px 6px rgba(255,255,255,0.85);
+    opacity: 0; transform: translate3d(0, 14px, 0);
+    transition: opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1), transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .line.show { opacity: 1; transform: translate3d(0, 0, 0); }
-  .gap { height: 14vh; }
+  .gap { height: 15vh; }
+
+  /* ===== Wax Seal Ending Note ===== */
   .end {
-    position: relative; z-index: 2; text-align: center; padding: 0 24px 22vh;
-    font-family: 'Dancing Script', cursive; font-size: clamp(1.8rem, 8vw, 2.4rem); color: #a84162;
-    text-shadow: 0 1px 8px rgba(255,255,255,0.9);
-    opacity: 0; transform: translate3d(0, 12px, 0);
+    position: relative; z-index: 2; text-align: center;
+    max-width: 440px; margin: 0 auto; padding: 0 24px 24vh;
+    opacity: 0; transform: translate3d(0, 14px, 0);
     transition: opacity 1.4s ease, transform 1.4s ease;
   }
   .end.show { opacity: 1; transform: translate3d(0, 0, 0); }
-  .end small { display: block; margin-top: 10px; font-family: 'Quicksand', sans-serif; font-size: 0.85rem; letter-spacing: 2px; color: #8a4a62; }
+  .wax-seal {
+    width: 46px; height: 46px; margin: 0 auto 16px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e86b92, #b83b62);
+    box-shadow: 0 6px 16px rgba(184, 59, 98, 0.32), inset 0 2px 4px rgba(255, 255, 255, 0.45);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff6f9; font-size: 1.05rem;
+    border: 2px solid rgba(255, 230, 238, 0.65);
+  }
+  .end .sign {
+    font-family: 'Homemade Apple', cursive;
+    font-size: clamp(1.45rem, 6vw, 1.9rem); color: #8f3252;
+    text-shadow: 0 1px 10px rgba(255,255,255,0.95);
+  }
+  .end small { display: block; margin-top: 8px; font-size: 0.82rem; letter-spacing: 2px; color: #7d3e54; }
 
-  /* Music note, floating bottom-right */
+  /* ===== Cute Keepsake Wallet (Delicately tucked onto the corner of Stanza III) ===== */
+  .stanza-anchor {
+    position: relative;
+  }
+  .wallet-section {
+    position: absolute;
+    right: -135px;
+    top: -54px;
+    width: 175px;
+    z-index: 20;
+    text-align: center;
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) rotate(5deg);
+    transition: opacity 1.1s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .wallet-section.show {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(5deg);
+  }
+  .wallet-section:hover {
+    transform: translate3d(0, -3px, 0) rotate(3deg);
+  }
+  .wallet-peek-note {
+    font-family: 'Homemade Apple', cursive;
+    font-size: 0.72rem;
+    color: #9e3d5d;
+    margin-bottom: 4px;
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.3px;
+    pointer-events: none;
+  }
+  .wallet-scale-wrap {
+    width: 168px;
+    height: 184px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .wallet-scene {
+    width: 300px;
+    height: 320px;
+    position: relative;
+    cursor: pointer;
+    transform: scale(0.56);
+    transform-origin: top left;
+  }
+  @media (max-width: 780px) {
+    .stanza-anchor {
+      margin-top: 72px;
+    }
+    .wallet-section {
+      right: 12px;
+      top: -96px;
+      width: 138px;
+    }
+    .wallet-scale-wrap {
+      width: 132px;
+      height: 145px;
+    }
+    .wallet-scene {
+      transform: scale(0.44);
+    }
+  }
+  .wallet {
+    position: absolute; left: 0; bottom: 0; width: 300px; height: 200px;
+    perspective: 900px;
+    animation: walletBob 4s ease-in-out infinite;
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .wallet-scene:hover .wallet { transform: translateY(-4px); }
+  .wallet-scene:active .wallet { transform: scale(.98); }
+  @keyframes walletBob { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+
+  .wallet-back {
+    position: absolute; inset: 0; background: #c95883; border-radius: 26px;
+    box-shadow: 0 18px 30px rgba(180,60,110,.32);
+  }
+  .wallet-photo {
+    position: absolute; left: 30px; bottom: 22px; width: 240px; height: 170px; z-index: 2;
+    background: #fffaf3; padding: 10px 10px 34px; border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(0,0,0,.18); will-change: transform;
+    transition: transform .7s cubic-bezier(.65,0,.35,1) 0s;
+  }
+  .wallet-photo .frame {
+    width: 100%; height: 100%; border-radius: 6px; overflow: hidden;
+    background: #ffd9e6; position: relative;
+  }
+  .wallet-photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .wallet-photo .ph {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 14px; color: #8a3a5c; gap: 6px;
+  }
+  .wallet-photo .ph span { font-size: 34px; }
+  .wallet-caption {
+    position: absolute; left: 0; right: 0; bottom: 7px; text-align: center; font-size: 13px;
+    font-family: 'Homemade Apple', cursive; color: #b0456f; outline: none;
+  }
+  .wallet-front {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 135px; z-index: 3;
+    background: linear-gradient(180deg, #ff8fb3, #e9709b);
+    border-radius: 18px 18px 26px 26px; box-shadow: 0 -5px 10px rgba(120,30,70,.28);
+  }
+  .wallet-front::before, .wallet-flap::before {
+    content: ""; position: absolute; inset: 8px; border: 2px dashed #fff4f8;
+    border-radius: inherit; opacity: .82; pointer-events: none;
+  }
+  .wallet-flap {
+    position: absolute; left: 0; right: 0; top: 0; height: 105px; z-index: 4;
+    background: linear-gradient(180deg, #ffa3c1, #ff8fb3);
+    border-radius: 26px 26px 40px 40px; transform-origin: top center;
+    will-change: transform; backface-visibility: visible;
+    transition: transform .8s cubic-bezier(.65,0,.35,1) .55s, filter .8s ease .55s, z-index 0s .95s;
+    box-shadow: 0 6px 10px rgba(150,40,90,.25);
+  }
+  .heart-clasp {
+    position: absolute; left: 50%; bottom: -14px; width: 34px; height: 34px; margin-left: -17px;
+    display: flex; align-items: center; justify-content: center; font-size: 25px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.25));
+  }
+  .wallet-scene.open .wallet-flap {
+    transition: transform .8s cubic-bezier(.65,0,.35,1), filter .8s ease, z-index 0s .4s;
+    transform: rotateX(180deg); z-index: 1; filter: brightness(.92);
+  }
+  .wallet-scene.open .wallet-photo {
+    transition: transform 1.1s cubic-bezier(.22,1,.36,1) .6s;
+    transform: translateY(-108px) rotate(-3deg) scale(1.02);
+  }
+  .wallet-scene:not(.open) .wallet-photo { transform: translateY(0); }
+
+  .wallet-float {
+    position: fixed; font-size: 22px; pointer-events: none;
+    animation: walletFloatUp 2.4s cubic-bezier(.2,.7,.3,1) forwards; z-index: 65;
+  }
+  @keyframes walletFloatUp {
+    0% { opacity: 0; transform: translateY(0) scale(.6); }
+    15% { opacity: 1; }
+    100% { transform: translateY(-240px) translateX(var(--dx,0px)) scale(1.3); opacity: 0; }
+  }
+
+  /* Floating controls */
   #tapHint {
     position: fixed; bottom: 18px; right: 18px; z-index: 50;
-    font-size: 0.75rem; color: #8a4a62; background: rgba(255,255,255,0.85);
-    padding: 6px 12px; border-radius: 20px;
+    font-size: 0.74rem; letter-spacing: 0.5px; color: #7d3e54;
+    background: rgba(255,255,255,0.88);
+    border: 1px solid rgba(255,255,255,0.95);
+    padding: 6px 13px; border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(143, 50, 82, 0.1);
   }
   #musicBtn {
     position: fixed; bottom: 18px; left: 18px; z-index: 55;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.88); color: #8a4a62;
-    font-family: 'Quicksand', sans-serif; font-size: 0.78rem; font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.9); color: #7d3e54;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.76rem; font-weight: 500;
     padding: 7px 14px; border-radius: 24px;
-    cursor: pointer; box-shadow: 0 4px 12px rgba(168, 65, 98, 0.12);
+    cursor: pointer; box-shadow: 0 4px 12px rgba(143, 50, 82, 0.12);
     transition: transform 0.2s ease, background 0.2s ease;
   }
   #musicBtn:active { transform: scale(0.95); }
@@ -164,29 +385,33 @@
 </head>
 <body>
 
+<div id="grain"></div>
+
 <!-- Background Audio (place madeinjapan.mp3 in the same folder) -->
 <audio id="song" src="madeinjapan.mp3" preload="auto"></audio>
 
-<!-- Welcome screen with her name -->
+<!-- Welcome screen -->
 <div id="welcome">
-  <div class="hi">Hey Tanishka &#10084;</div>
-  <div class="sub">I made something small, just for you</div>
-  <button id="openBtn">Tap to open &#127800;</button>
+  <div class="envelope-card">
+    <div class="hi">Hey Tanishka &#10084;</div>
+    <div class="sub">I made something small, just for you</div>
+    <button id="openBtn">Tap to open &#127800;</button>
+  </div>
 </div>
 
-<!-- Japan scene: starry sky, sun, Fuji, hills, torii, lanterns, sakura branch -->
+<!-- Japan scene: starry sky, sun, Fuji, hills, torii, lanterns, sakura groves -->
 <div id="scene">
   <svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax meet" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#e9b8da"/>
-        <stop offset="0.35" stop-color="#ffd0e0"/>
-        <stop offset="0.7" stop-color="#ffe3d6"/>
-        <stop offset="1" stop-color="#f7b8cd"/>
+        <stop offset="0" stop-color="#e5b7d4"/>
+        <stop offset="0.35" stop-color="#fbd0de"/>
+        <stop offset="0.7" stop-color="#ffe5d8"/>
+        <stop offset="1" stop-color="#f5b4ca"/>
       </linearGradient>
       <linearGradient id="fuji" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#b58aa8"/>
-        <stop offset="1" stop-color="#e5b4c8"/>
+        <stop offset="0" stop-color="#ad80a0"/>
+        <stop offset="1" stop-color="#e3b1c6"/>
       </linearGradient>
       <radialGradient id="sunG" cx="0.5" cy="0.5" r="0.5">
         <stop offset="0" stop-color="#ff8fa8"/>
@@ -255,6 +480,9 @@
       <circle class="twinkle" style="animation-delay:-1.3s" cx="890" cy="85" r="1.3"/>
     </g>
 
+    <!-- Occasional delicate shooting star -->
+    <line class="shooting-star" x1="295" y1="88" x2="345" y2="62"/>
+
     <!-- Crescent moon -->
     <g class="twinkle" style="animation-duration:5s">
       <circle cx="320" cy="210" r="20" fill="#fff8e8"/>
@@ -282,16 +510,21 @@
     <path d="M570 630 L740 445 Q810 390 880 445 L1040 600 L1210 465 Q1280 415 1350 465 L1600 630 Z" fill="#cfa2bf" opacity="0.55"/>
 
     <!-- Grand, oversized Mount Fuji with snow cap -->
-    <path d="M-170 675 L112 355 Q200 268 288 355 L570 675 Z" fill="url(#fuji)"/>
-    <path d="M112 355 Q200 268 288 355 L268 374 L244 351 L222 381 L200 351 L178 383 L156 353 L132 374 Z" fill="#fff7fa"/>
+    <g id="fujiLayer">
+      <path d="M-170 675 L112 355 Q200 268 288 355 L570 675 Z" fill="url(#fuji)"/>
+      <path d="M112 355 Q200 268 288 355 L268 374 L244 351 L222 381 L200 351 L178 383 L156 353 L132 374 Z" fill="#fff7fa"/>
+    </g>
 
     <!-- Hills (extended full-width across desktop & mobile) -->
-    <path d="M-1200 630 Q-600 595 0 640 Q70 590 145 625 T300 618 T400 630 Q900 595 1600 630 L1600 900 L-1200 900 Z" fill="#e9a9c0" opacity="0.85"/>
-    <path d="M-1200 685 Q-500 655 0 700 Q95 655 190 690 T400 680 Q950 650 1600 685 L1600 900 L-1200 900 Z" fill="#d98aa8"/>
+    <g id="midHills">
+      <path d="M-1200 630 Q-600 595 0 640 Q70 590 145 625 T300 618 T400 630 Q900 595 1600 630 L1600 900 L-1200 900 Z" fill="#e9a9c0" opacity="0.85"/>
+    </g>
+    <g id="nearHills">
+      <path d="M-1200 685 Q-500 655 0 700 Q95 655 190 690 T400 680 Q950 650 1600 685 L1600 900 L-1200 900 Z" fill="#d98aa8"/>
+    </g>
 
-    <!-- Far-Left Sakura Grove (Fills Wide Desktop Left Wing) -->
+    <!-- Far-Left Sakura Grove -->
     <g>
-      <!-- Outer Left Sakura Tree 1 -->
       <path d="M-380 715 Q-370 645 -384 575 Q-394 520 -356 468" stroke="#6b3242" stroke-width="14" fill="none" stroke-linecap="round"/>
       <path d="M-380 625 Q-418 592 -456 572" stroke="#6b3242" stroke-width="8" fill="none" stroke-linecap="round"/>
       <path d="M-378 585 Q-332 548 -286 530" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
@@ -315,7 +548,6 @@
       <use href="#sakura-flower-light" transform="translate(-318,454) scale(1.25) rotate(22)"/>
       <use href="#sakura-flower" transform="translate(-286,448) scale(1.1) rotate(64)"/>
 
-      <!-- Mid-Left Sakura Tree 2 -->
       <path d="M-190 698 Q-184 642 -194 590 Q-202 546 -172 504" stroke="#7a3b4d" stroke-width="10" fill="none" stroke-linecap="round"/>
       <path d="M-190 618 Q-222 590 -252 576" stroke="#7a3b4d" stroke-width="5.5" fill="none" stroke-linecap="round"/>
       <path d="M-188 584 Q-152 556 -118 542" stroke="#7a3b4d" stroke-width="5.5" fill="none" stroke-linecap="round"/>
@@ -331,7 +563,6 @@
       <use href="#sakura-flower-light" transform="translate(-142,538) scale(1.15) rotate(62)"/>
       <use href="#sakura-flower" transform="translate(-116,544) scale(1.05) rotate(30)"/>
 
-      <!-- Distant Left Torii Gate -->
       <g fill="#c2455f" opacity="0.88" transform="translate(-295,622) scale(0.85)">
         <rect x="0" y="0" width="7" height="62"/>
         <rect x="50" y="0" width="7" height="62"/>
@@ -345,13 +576,11 @@
       <path d="M128 655 Q132 618 124 585 Q118 560 136 538" stroke="#8c4c5e" stroke-width="6.5" fill="none" stroke-linecap="round"/>
       <path d="M126 608 Q106 590 88 580" stroke="#8c4c5e" stroke-width="3.8" fill="none" stroke-linecap="round"/>
       <path d="M128 592 Q150 572 170 564" stroke="#8c4c5e" stroke-width="3.8" fill="none" stroke-linecap="round"/>
-      <!-- Soft canopy base -->
       <g fill="#f79bb9" opacity="0.75">
         <ellipse cx="94" cy="574" rx="26" ry="18"/>
         <ellipse cx="132" cy="546" rx="34" ry="22"/>
         <ellipse cx="164" cy="564" rx="26" ry="18"/>
       </g>
-      <!-- Detailed 5-petal flowers -->
       <use href="#sakura-flower" transform="translate(86,574) scale(0.85) rotate(12)"/>
       <use href="#sakura-flower-light" transform="translate(102,562) scale(0.95) rotate(35)"/>
       <use href="#sakura-flower" transform="translate(122,542) scale(1.05) rotate(18)"/>
@@ -364,7 +593,6 @@
 
     <!-- Foreground Grand Sakura Tree (Left Side) -->
     <g>
-      <!-- Sculpted dark cherry-wood trunk & graceful branches -->
       <path d="M36 718 Q44 652 32 588 Q20 532 56 482" stroke="#6b3242" stroke-width="13" fill="none" stroke-linecap="round"/>
       <path d="M32 718 Q40 660 36 600" stroke="#854355" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
       <path d="M36 632 Q8 598 -28 576" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
@@ -374,7 +602,6 @@
       <path d="M48 514 Q82 482 114 472" stroke="#6b3242" stroke-width="5" fill="none" stroke-linecap="round"/>
       <path d="M56 482 Q48 446 68 424" stroke="#6b3242" stroke-width="4.5" fill="none" stroke-linecap="round"/>
 
-      <!-- Soft layered blossom foliage backdrop -->
       <g fill="#f58eb2" opacity="0.72">
         <ellipse cx="-26" cy="570" rx="34" ry="22"/>
         <ellipse cx="22" cy="542" rx="44" ry="28"/>
@@ -391,7 +618,6 @@
         <ellipse cx="98" cy="470" rx="26" ry="16"/>
       </g>
 
-      <!-- Rich clusters of detailed 5-petal Sakura blossoms -->
       <use href="#sakura-flower" transform="translate(-34,572) scale(1.1) rotate(15)"/>
       <use href="#sakura-flower-light" transform="translate(-14,556) scale(1.25) rotate(42)"/>
       <use href="#sakura-flower" transform="translate(8,574) scale(1.0) rotate(65)"/>
@@ -421,7 +647,6 @@
       <path d="M382 542 Q346 512 314 502" stroke="#6b3242" stroke-width="5" fill="none" stroke-linecap="round"/>
       <path d="M366 498 Q374 466 356 446" stroke="#6b3242" stroke-width="4" fill="none" stroke-linecap="round"/>
 
-      <!-- Soft canopy base -->
       <g fill="#f58eb2" opacity="0.72">
         <ellipse cx="326" cy="576" rx="34" ry="21"/>
         <ellipse cx="382" cy="544" rx="42" ry="26"/>
@@ -434,7 +659,6 @@
         <ellipse cx="368" cy="462" rx="30" ry="18"/>
       </g>
 
-      <!-- Detailed 5-petal blossoms -->
       <use href="#sakura-flower-light" transform="translate(308,582) scale(1.0) rotate(20)"/>
       <use href="#sakura-flower" transform="translate(330,568) scale(1.2) rotate(48)"/>
       <use href="#sakura-flower-light" transform="translate(356,554) scale(1.15) rotate(14)"/>
@@ -447,9 +671,8 @@
       <use href="#sakura-flower" transform="translate(356,442) scale(1.05) rotate(66)"/>
     </g>
 
-    <!-- Far-Right Sakura Grove (Fills Wide Desktop Right Wing) -->
+    <!-- Far-Right Sakura Grove -->
     <g>
-      <!-- Mid-Right Sakura Tree -->
       <path d="M585 698 Q592 642 580 588 Q570 542 602 498" stroke="#7a3b4d" stroke-width="10.5" fill="none" stroke-linecap="round"/>
       <path d="M584 616 Q548 588 516 572" stroke="#7a3b4d" stroke-width="6" fill="none" stroke-linecap="round"/>
       <path d="M586 582 Q624 554 658 540" stroke="#7a3b4d" stroke-width="6" fill="none" stroke-linecap="round"/>
@@ -465,7 +688,6 @@
       <use href="#sakura-flower" transform="translate(632,536) scale(1.2) rotate(32)"/>
       <use href="#sakura-flower-light" transform="translate(660,544) scale(1.05) rotate(66)"/>
 
-      <!-- Outer Right Grand Sakura Tree -->
       <path d="M780 715 Q770 645 784 575 Q794 520 756 468" stroke="#6b3242" stroke-width="14" fill="none" stroke-linecap="round"/>
       <path d="M780 625 Q742 592 704 572" stroke="#6b3242" stroke-width="8" fill="none" stroke-linecap="round"/>
       <path d="M778 585 Q824 548 870 530" stroke="#6b3242" stroke-width="7.5" fill="none" stroke-linecap="round"/>
@@ -487,7 +709,6 @@
       <use href="#sakura-flower" transform="translate(792,456) scale(1.25) rotate(50)"/>
       <use href="#sakura-flower-light" transform="translate(836,448) scale(1.15) rotate(62)"/>
 
-      <!-- Far-Right Torii Gate -->
       <g fill="#c2455f" opacity="0.88" transform="translate(665,620) scale(0.85)">
         <rect x="0" y="0" width="7" height="62"/>
         <rect x="50" y="0" width="7" height="62"/>
@@ -505,7 +726,6 @@
     </g>
 
     <!-- Hanging Japanese paper lanterns (chochin) across the wide canopy -->
-    <!-- Far-Left Lantern (Desktop Wing) -->
     <g class="lantern l2" style="transform-origin:-260px 0">
       <line x1="-260" y1="-20" x2="-260" y2="104" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
       <circle cx="-260" cy="104" r="2.2" fill="#d4889c"/>
@@ -519,7 +739,6 @@
       <circle cx="-260" cy="153" r="1.8" fill="#ffd180"/>
     </g>
 
-    <!-- Mid-Left Lantern (Desktop Wing) -->
     <g class="lantern l3" style="transform-origin:-120px 0">
       <line x1="-120" y1="-20" x2="-120" y2="78" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
       <circle cx="-120" cy="78" r="2" fill="#d4889c"/>
@@ -533,26 +752,19 @@
       <circle cx="-120" cy="119" r="1.5" fill="#ffd180"/>
     </g>
 
-    <!-- Top-Left Lantern 1 -->
     <g class="lantern" style="transform-origin:42px 0">
       <line x1="42" y1="-20" x2="42" y2="112" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
       <circle cx="42" cy="112" r="2.2" fill="#d4889c"/>
       <circle class="lglow" cx="42" cy="136" r="38" fill="url(#lampG)"/>
-      <!-- Lantern body -->
       <rect x="28" y="116" width="28" height="40" rx="13" fill="#ff6688"/>
-      <!-- Warm inner candle glow -->
       <ellipse cx="42" cy="136" rx="9" ry="14" fill="#ffd9a8" opacity="0.55"/>
-      <!-- Paper ribs -->
       <path d="M29 125 Q42 128 55 125 M28 136 Q42 139 56 136 M29 147 Q42 150 55 147" stroke="#b83b58" stroke-width="1" fill="none" opacity="0.6"/>
-      <!-- Top & bottom wooden caps -->
       <rect x="33" y="113" width="18" height="4" rx="1.5" fill="#6e283c"/>
       <rect x="33" y="155" width="18" height="4" rx="1.5" fill="#6e283c"/>
-      <!-- Silk tassel -->
       <line x1="42" y1="159" x2="42" y2="171" stroke="#c2455f" stroke-width="1.6" stroke-linecap="round"/>
       <circle cx="42" cy="161" r="1.8" fill="#ffd180"/>
     </g>
 
-    <!-- Top-Left Lantern 2 (higher & slightly smaller for depth) -->
     <g class="lantern l2" style="transform-origin:92px 0">
       <line x1="92" y1="-20" x2="92" y2="74" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
       <circle cx="92" cy="74" r="2" fill="#d4889c"/>
@@ -566,7 +778,6 @@
       <circle cx="92" cy="115" r="1.5" fill="#ffd180"/>
     </g>
 
-    <!-- Top-Right Lantern 3 -->
     <g class="lantern l3" style="transform-origin:356px 0">
       <line x1="356" y1="-20" x2="356" y2="96" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
       <circle cx="356" cy="96" r="2.2" fill="#d4889c"/>
@@ -580,7 +791,6 @@
       <circle cx="356" cy="142" r="1.6" fill="#ffd180"/>
     </g>
 
-    <!-- Mid-Right Lantern (Desktop Wing) -->
     <g class="lantern" style="transform-origin:520px 0">
       <line x1="520" y1="-20" x2="520" y2="76" stroke="#8a3a52" stroke-width="1.2" opacity="0.55"/>
       <circle cx="520" cy="76" r="2" fill="#d4889c"/>
@@ -594,7 +804,6 @@
       <circle cx="520" cy="117" r="1.5" fill="#ffd180"/>
     </g>
 
-    <!-- Far-Right Lantern (Desktop Wing) -->
     <g class="lantern l2" style="transform-origin:660px 0">
       <line x1="660" y1="-20" x2="660" y2="108" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
       <circle cx="660" cy="108" r="2.2" fill="#d4889c"/>
@@ -615,43 +824,88 @@
 <div id="bursts"></div>
 
 <section class="hero">
-  <div class="kanji">&#26085;&#26412;</div>
   <h1>under the sakura sky</h1>
+  <div class="divider"></div>
   <p>tap anywhere, then scroll down slowly</p>
   <div class="hint">scroll down &#8595;</div>
 </section>
 
-<section class="lyrics">
-  <!-- STANZA 1 -->
-  <div class="line">My transistor radio comes from far away</div>
-  <div class="line">And when it's night over here, over there it's breaking day</div>
-  <div class="line">I remember all the good times I had walking in the sand</div>
-  <div class="line">With a beautiful girl that I met made in Japan</div>
-  <div class="gap"></div>
+<div class="main-stage">
+  <section class="lyrics">
+    <!-- STANZA 1 -->
+    <div class="stanza-card">
+      <span class="stanza-num">&#10047; I &#10047;</span>
+      <div class="line">My transistor radio comes from far away</div>
+      <div class="line">And when it's night over here, over there it's breaking day</div>
+      <div class="line">I remember all the good times I had walking in the sand</div>
+      <div class="line">With a beautiful girl that I met made in Japan</div>
+    </div>
+    <div class="gap"></div>
 
-  <!-- STANZA 2 -->
-  <div class="line">That beauty of her face was beyond my wildest dreams</div>
-  <div class="line">Like cherry blossoms blooming in the mountains in the early spring</div>
-  <div class="line">As we walked by the river and she softly took hold of my hand</div>
-  <div class="line">That's when I fell deep in love with a girl made in Japan</div>
-  <div class="gap"></div>
+    <!-- STANZA 2 + Keepsake Wallet delicately tucked onto the upper-right edge -->
+    <div class="stanza-anchor">
+      <div class="stanza-card">
+        <span class="stanza-num">&#10047; II &#10047;</span>
+        <div class="line">That beauty of her face was beyond my wildest dreams</div>
+        <div class="line">Like cherry blossoms blooming in the mountains in the early spring</div>
+        <div class="line">As we walked by the river and she softly took hold of my hand</div>
+        <div class="line">That's when I fell deep in love with a girl made in Japan</div>
+      </div>
 
-  <!-- STANZA 3 -->
-  <div class="line">In the dark of night, we would lay on Tokyo Bay</div>
-  <div class="line">And the singing of the birds woke us up at the break of day</div>
-  <div class="line">Her smiling eyes always seemed to try to understand</div>
-  <div class="line">All the love in my heart for the girl made in Japan</div>
-  <div class="gap"></div>
+      <aside class="wallet-section" id="walletSection" title="Tap to open">
+        <div class="wallet-peek-note">tap to peek &#9825;</div>
 
-  <!-- STANZA 4 -->
- <div class="line">My transistor radio comes from far away</div>
-  <div class="line">And when it's night over here, over there it's breaking day</div>
-  <div class="line">She cried when she said she'd been promised to another man</div>
-  <div class="line">That's when I left my heart with the girl made in Japan</div>
-  <div class="line">Yes, my heart will always be with the girl made in Japan</div>
-</section>
+        <div class="wallet-scale-wrap">
+          <div class="wallet-scene" id="walletScene">
+            <div class="wallet">
+              <div class="wallet-back"></div>
 
-<div class="end" id="end">always yours &#10084;<small>a quiet little piece of my heart</small></div>
+              <div class="wallet-photo">
+                <div class="frame" id="walletFrame">
+                  <img id="walletImg" alt="">
+                  <div class="ph" id="walletPh"><span>&#128248;</span>tap to add photo</div>
+                </div>
+                <div class="wallet-caption" id="walletCaption" contenteditable="true" spellcheck="false">forever &amp; always &#9825;</div>
+              </div>
+
+              <div class="wallet-front"></div>
+              <div class="wallet-flap"><div class="heart-clasp">&#128151;</div></div>
+            </div>
+          </div>
+        </div>
+
+        <input id="walletFile" type="file" accept="image/*" hidden>
+      </aside>
+    </div>
+    <div class="gap"></div>
+
+    <!-- STANZA 3 -->
+    <div class="stanza-card">
+      <span class="stanza-num">&#10047; III &#10047;</span>
+      <div class="line">In the dark of night, we would lay on Tokyo Bay</div>
+      <div class="line">And the singing of the birds woke us up at the break of day</div>
+      <div class="line">Her smiling eyes always seemed to try to understand</div>
+      <div class="line">All the love in my heart for the girl made in Japan</div>
+    </div>
+    <div class="gap"></div>
+
+    <!-- STANZA 4 -->
+    <div class="stanza-card">
+      <span class="stanza-num">&#10047; IV &#10047;</span>
+      <div class="line">My transistor radio comes from far away</div>
+      <div class="line">And when it's night over here, over there it's breaking day</div>
+      <div class="line">She cried when she said she'd been promised to another man</div>
+      <div class="line">That's when I left my heart with the girl made in Japan</div>
+      <div class="line">Yes, my heart will always be with the girl made in Japan</div>
+    </div>
+  </section>
+</div>
+
+<div class="end" id="end">
+  <div class="wax-seal">&#10084;</div>
+  <div class="sign">always yours</div>
+  <small>a quiet little piece of my heart</small>
+</div>
 
 <button id="musicBtn" aria-label="Toggle music">&#9835; play</button>
 <div id="tapHint">&#10024; tap anywhere</div>
@@ -677,7 +931,6 @@
     song.play().then(() => {
       setMusicState(true);
     }).catch(() => {
-      // Fallback if audio file is missing or blocked: still auto-scroll smoothly
       setMusicState(true);
     });
   }
@@ -706,17 +959,26 @@
   window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
   window.addEventListener('touchmove', pauseAutoScrollTemporarily, { passive: true });
 
-  // Smoothly glide down in sync with the song's duration
+  // Subtle depth parallax on Mount Fuji and the foreground hills as the page scrolls
+  const fujiLayer = document.getElementById('fujiLayer');
+  const midHills = document.getElementById('midHills');
   let maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
   window.addEventListener('resize', () => {
     maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
   }, { passive: true });
 
+  function updateParallax() {
+    const progress = maxScrollCache > 0 ? Math.min(window.scrollY / maxScrollCache, 1) : 0;
+    if (fujiLayer) fujiLayer.style.transform = `translate3d(0, ${progress * -22}px, 0)`;
+    if (midHills) midHills.style.transform = `translate3d(0, ${progress * -10}px, 0)`;
+  }
+  window.addEventListener('scroll', updateParallax, { passive: true });
+
+  // Smoothly glide down in sync with the song's duration
   function autoScrollLoop(now) {
     if (isPlaying && !userScrolling) {
       if (lastFrameTime !== null) {
         const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
-        // Calculate speed from song duration (or default 155s for Made in Japan)
         const duration = (song.duration && isFinite(song.duration) && song.duration > 10) ? song.duration : 155;
         const pxPerSec = maxScrollCache / Math.max(duration - 4, 20);
 
@@ -738,7 +1000,6 @@
   const openBtn = document.getElementById('openBtn');
   openBtn.addEventListener('click', () => {
     welcome.classList.add('hide');
-    // Start audio right on tap, then begin smooth scrolling after the fade-out settles
     song.play().catch(() => {});
     setTimeout(() => {
       startExperience();
@@ -798,14 +1059,61 @@
   }
 
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('#welcome') && e.target.id !== 'musicBtn') magic(e.clientX, e.clientY);
+    if (!e.target.closest('#welcome') && !e.target.closest('#walletSection') && e.target.id !== 'musicBtn') magic(e.clientX, e.clientY);
   });
   document.addEventListener('touchstart', (e) => {
     const t = e.touches[0];
-    if (t && !e.target.closest('#welcome') && e.target.id !== 'musicBtn') magic(t.clientX, t.clientY);
+    if (t && !e.target.closest('#welcome') && !e.target.closest('#walletSection') && e.target.id !== 'musicBtn') magic(t.clientX, t.clientY);
   }, { passive: true });
 
-  // Fade in each lyric line as it scrolls into view
+  // Cute Keepsake Wallet Interactions
+  const walletScene = document.getElementById('walletScene');
+  const walletImg = document.getElementById('walletImg');
+  const walletPh = document.getElementById('walletPh');
+  const walletFile = document.getElementById('walletFile');
+  const walletPeekNote = document.querySelector('.wallet-peek-note');
+
+  function walletBurst() {
+    const rect = walletScene.getBoundingClientRect();
+    for (let i = 0; i < 10; i++) {
+      const h = document.createElement('div');
+      h.className = 'wallet-float';
+      h.textContent = ['💗', '💖', '💕', '✨', '🌸'][i % 5];
+      h.style.left = (rect.left + 40 + Math.random() * (rect.width - 80)) + 'px';
+      h.style.bottom = (window.innerHeight - rect.top - 120) + 'px';
+      h.style.animationDelay = (i * 0.1) + 's';
+      h.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 2600);
+    }
+  }
+
+  function toggleWallet() {
+    walletScene.classList.toggle('open');
+    const isOpen = walletScene.classList.contains('open');
+    if (walletPeekNote) walletPeekNote.innerHTML = isOpen ? 'close &#9825;' : 'tap to peek &#9825;';
+    if (isOpen) walletBurst();
+  }
+
+  walletScene.addEventListener('click', (e) => {
+    if (e.target.closest('#walletCaption')) return;
+    if (walletScene.classList.contains('open') && e.target.closest('#walletFrame')) {
+      walletFile.click();
+      return;
+    }
+    toggleWallet();
+  });
+
+  walletFile.addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    walletImg.src = URL.createObjectURL(f);
+    walletImg.style.display = 'block';
+    walletPh.style.display = 'none';
+    if (!walletScene.classList.contains('open')) toggleWallet();
+  });
+
+  // Fade in each lyric line, wallet section, and ending note as they scroll into view
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) {
@@ -814,7 +1122,7 @@
       }
     });
   }, { threshold: 0.25 });
-  document.querySelectorAll('.line, .end').forEach((el) => obs.observe(el));
+  document.querySelectorAll('.line, .wallet-section, .end').forEach((el) => obs.observe(el));
 
   // Hide the tap hint after a few seconds
   setTimeout(() => {
