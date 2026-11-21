@@ -865,10 +865,9 @@
 
               <div class="wallet-photo">
                 <div class="frame" id="walletFrame">
-                  <img id="walletImg" src="tanishka.jpg" alt="Tanishka" style="display: block;" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}else{this.style.display='none';document.getElementById('walletPh').style.display='flex';}">
-                  <div class="ph" id="walletPh" style="display: none;"><span>&#128248;</span>tap to add photo</div>
+                  <img id="walletImg" src="tanishka.jpg" alt="Tanishka" style="display: block;" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}">
                 </div>
-                <div class="wallet-caption" id="walletCaption" contenteditable="true" spellcheck="false">forever &amp; always &#9825;</div>
+                <div class="wallet-caption" id="walletCaption">forever &amp; always &#9825;</div>
               </div>
 
               <div class="wallet-front"></div>
@@ -876,8 +875,6 @@
             </div>
           </div>
         </div>
-
-        <input id="walletFile" type="file" accept="image/*" hidden>
       </aside>
     </div>
     <div class="gap"></div>
@@ -1071,9 +1068,6 @@
 
   // Cute Keepsake Wallet Interactions
   const walletScene = document.getElementById('walletScene');
-  const walletImg = document.getElementById('walletImg');
-  const walletPh = document.getElementById('walletPh');
-  const walletFile = document.getElementById('walletFile');
   const walletPeekNote = document.querySelector('.wallet-peek-note');
 
   function walletBurst() {
@@ -1098,22 +1092,8 @@
     if (isOpen) walletBurst();
   }
 
-  walletScene.addEventListener('click', (e) => {
-    if (e.target.closest('#walletCaption')) return;
-    if (walletScene.classList.contains('open') && e.target.closest('#walletFrame')) {
-      walletFile.click();
-      return;
-    }
+  walletScene.addEventListener('click', () => {
     toggleWallet();
-  });
-
-  walletFile.addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if (!f) return;
-    walletImg.src = URL.createObjectURL(f);
-    walletImg.style.display = 'block';
-    walletPh.style.display = 'none';
-    if (!walletScene.classList.contains('open')) toggleWallet();
   });
 
   // Fade in each lyric line, wallet section, and ending note as they scroll into view
