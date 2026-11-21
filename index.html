@@ -865,8 +865,8 @@
 
               <div class="wallet-photo">
                 <div class="frame" id="walletFrame">
-                  <img id="walletImg" alt="">
-                  <div class="ph" id="walletPh"><span>&#128248;</span>tap to add photo</div>
+                  <img id="walletImg" src="tanishka.jpg" alt="Tanishka" style="display: block;" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}else{this.style.display='none';document.getElementById('walletPh').style.display='flex';}">
+                  <div class="ph" id="walletPh" style="display: none;"><span>&#128248;</span>tap to add photo</div>
                 </div>
                 <div class="wallet-caption" id="walletCaption" contenteditable="true" spellcheck="false">forever &amp; always &#9825;</div>
               </div>
