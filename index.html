@@ -233,7 +233,7 @@
     text-shadow: 0 1px 12px rgba(255, 245, 248, 0.96), 0 0 20px rgba(255, 235, 242, 0.85);
   }
 
-  /* ===== Cute Keepsake Wallet ===== */
+  /* ===== Cute Keepsake Wallet (Lag-Free Optimized) ===== */
   .stanza-anchor {
     position: relative;
   }
@@ -245,15 +245,12 @@
     z-index: 20;
     text-align: center;
     opacity: 0;
-    transform: translate3d(0, 14px, 0) rotate(5deg);
-    transition: opacity 1.1s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: rotate(5deg);
+    transition: opacity 0.6s ease;
+    will-change: opacity;
   }
   .wallet-section.show {
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(5deg);
-  }
-  .wallet-section:hover {
-    transform: translate3d(0, -3px, 0) rotate(3deg);
   }
   .wallet-peek-note {
     font-family: 'Homemade Apple', cursive;
@@ -298,23 +295,18 @@
   .wallet {
     position: absolute; left: 0; bottom: 0; width: 300px; height: 200px;
     perspective: 900px;
-    animation: walletBob 4s ease-in-out infinite;
-    transition: transform .4s cubic-bezier(.22,1,.36,1);
-    will-change: transform;
   }
-  .wallet-scene:hover .wallet { transform: translateY(-4px); }
   .wallet-scene:active .wallet { transform: scale(.98); }
-  @keyframes walletBob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -6px, 0); } }
 
   .wallet-back {
     position: absolute; inset: 0; background: #c95883; border-radius: 26px;
-    box-shadow: 0 18px 30px rgba(180,60,110,.32);
+    box-shadow: 0 8px 16px rgba(180,60,110,.2);
   }
   .wallet-photo {
     position: absolute; left: 30px; bottom: 22px; width: 240px; height: 170px; z-index: 2;
     background: #fffaf3; padding: 10px 10px 34px; border-radius: 10px;
-    box-shadow: 0 6px 14px rgba(0,0,0,.18); will-change: transform;
-    transition: transform .7s cubic-bezier(.65,0,.35,1) 0s;
+    box-shadow: 0 4px 10px rgba(0,0,0,.14); will-change: transform;
+    transition: transform .6s cubic-bezier(.65,0,.35,1);
   }
   .wallet-photo .frame {
     width: 100%; height: 100%; border-radius: 6px; overflow: hidden;
@@ -333,7 +325,7 @@
   .wallet-front {
     position: absolute; left: 0; right: 0; bottom: 0; height: 135px; z-index: 3;
     background: linear-gradient(180deg, #ff8fb3, #e9709b);
-    border-radius: 18px 18px 26px 26px; box-shadow: 0 -5px 10px rgba(120,30,70,.28);
+    border-radius: 18px 18px 26px 26px;
   }
   .wallet-front::before, .wallet-flap::before {
     content: ""; position: absolute; inset: 8px; border: 2px dashed #fff4f8;
@@ -343,33 +335,32 @@
     position: absolute; left: 0; right: 0; top: 0; height: 105px; z-index: 4;
     background: linear-gradient(180deg, #ffa3c1, #ff8fb3);
     border-radius: 26px 26px 40px 40px; transform-origin: top center;
-    will-change: transform; backface-visibility: visible;
-    transition: transform .8s cubic-bezier(.65,0,.35,1) .55s, filter .8s ease .55s, z-index 0s .95s;
-    box-shadow: 0 6px 10px rgba(150,40,90,.25);
+    will-change: transform;
+    transition: transform .7s cubic-bezier(.65,0,.35,1) .45s, z-index 0s .8s;
   }
   .heart-clasp {
     position: absolute; left: 50%; bottom: -14px; width: 34px; height: 34px; margin-left: -17px;
     display: flex; align-items: center; justify-content: center; font-size: 25px;
   }
   .wallet-scene.open .wallet-flap {
-    transition: transform .8s cubic-bezier(.65,0,.35,1), filter .8s ease, z-index 0s .4s;
-    transform: rotateX(180deg); z-index: 1; filter: brightness(.92);
+    transition: transform .7s cubic-bezier(.65,0,.35,1), z-index 0s .35s;
+    transform: rotateX(180deg); z-index: 1;
   }
   .wallet-scene.open .wallet-photo {
-    transition: transform 1.1s cubic-bezier(.22,1,.36,1) .6s;
+    transition: transform .95s cubic-bezier(.22,1,.36,1) .5s;
     transform: translate3d(0, -108px, 0) rotate(-3deg) scale(1.02);
   }
   .wallet-scene:not(.open) .wallet-photo { transform: translate3d(0, 0, 0); }
 
   .wallet-float {
     position: fixed; font-size: 22px; pointer-events: none;
-    animation: walletFloatUp 2.4s cubic-bezier(.2,.7,.3,1) forwards; z-index: 65;
+    animation: walletFloatUp 2.2s ease-out forwards; z-index: 65;
     will-change: transform, opacity;
   }
   @keyframes walletFloatUp {
     0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.6); }
     15% { opacity: 1; }
-    100% { transform: translate3d(var(--dx,0px), -240px, 0) scale(1.3); opacity: 0; }
+    100% { transform: translate3d(var(--dx,0px), -230px, 0) scale(1.25); opacity: 0; }
   }
 
   /* Floating controls */
@@ -1017,6 +1008,10 @@
   }
 
   song.addEventListener('ended', () => setMusicState(false));
+
+  // Pre-decode wallet photo so it never stutters when appearing
+  const wImg = document.getElementById('walletImg');
+  if (wImg && wImg.decode) wImg.decode().catch(() => {});
 
   // Welcome screen
   const welcome = document.getElementById('welcome');
