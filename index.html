@@ -17,7 +17,6 @@
     min-height: 100vh;
   }
 
-  /* Subtle warm paper-grain texture for an editorial, handcrafted feel */
   #grain {
     position: fixed; inset: 0; z-index: 45; pointer-events: none; opacity: 0.032;
     background-image: radial-gradient(#5e3142 0.75px, transparent 0.75px);
@@ -86,7 +85,6 @@
   @keyframes sway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
   .lglow { animation: tw 3.2s ease-in-out infinite alternate; }
 
-  /* Delicate shooting star */
   .shooting-star {
     stroke: #fff; stroke-width: 1.5; stroke-linecap: round; opacity: 0;
     animation: shoot 11s ease-in-out infinite;
@@ -166,7 +164,7 @@
   @keyframes bob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, 9px, 0); } }
   @keyframes heroPulse { from { opacity: 0.9; transform: scale(0.996); } to { opacity: 1; transform: scale(1.008); } }
 
-  /* ===== Lyrics Stanza Cards (Washi Paper Style) ===== */
+  /* ===== Lyrics Stanza Cards ===== */
   .main-stage {
     position: relative; z-index: 2;
     max-width: 1200px; margin: 0 auto;
@@ -228,7 +226,7 @@
     text-shadow: 0 1px 12px rgba(255, 245, 248, 0.96), 0 0 20px rgba(255, 235, 242, 0.85);
   }
 
-  /* ===== Cute Keepsake Wallet (Delicately tucked onto the corner of Stanza III) ===== */
+  /* ===== Cute Keepsake Wallet ===== */
   .stanza-anchor {
     position: relative;
   }
@@ -397,9 +395,9 @@
 <!-- Welcome screen -->
 <div id="welcome">
   <div class="envelope-card">
-    <div class="hi">Hey Tanishka &#10084;</div>
+    <div class="hi">Hey Tanishka ❤</div>
     <div class="sub">I made something small, just for you</div>
-    <button id="openBtn">Tap to open &#127800;</button>
+    <button id="openBtn">Tap to open 🌸</button>
   </div>
 </div>
 
@@ -426,7 +424,6 @@
         <stop offset="0" stop-color="#fff2b8" stop-opacity="0.95"/>
         <stop offset="1" stop-color="#ffb870" stop-opacity="0"/>
       </radialGradient>
-      <!-- Detailed 5-petal Sakura blossom symbol -->
       <g id="sakura-flower">
         <g fill="#ffb3cc">
           <path d="M0,0 C-3.2,-4.5 -3.6,-10.5 0,-13.5 C3.6,-10.5 3.2,-4.5 0,0 Z"/>
@@ -458,10 +455,8 @@
       </g>
     </defs>
 
-    <!-- Full-bleed sky & seamless horizon extension -->
     <rect x="-1200" y="-400" width="2800" height="1400" fill="url(#sky)"/>
 
-    <!-- Twinkling stars spread across the entire wide sky -->
     <g fill="#fff">
       <circle class="twinkle" cx="-480" cy="80" r="1.5"/>
       <circle class="twinkle" style="animation-delay:-1.1s" cx="-360" cy="140" r="1.8"/>
@@ -484,20 +479,16 @@
       <circle class="twinkle" style="animation-delay:-1.3s" cx="890" cy="85" r="1.3"/>
     </g>
 
-    <!-- Occasional delicate shooting star -->
     <line class="shooting-star" x1="295" y1="88" x2="345" y2="62"/>
 
-    <!-- Crescent moon -->
     <g class="twinkle" style="animation-duration:5s">
       <circle cx="320" cy="210" r="20" fill="#fff8e8"/>
       <circle cx="329" cy="205" r="18" fill="#ffd9e6"/>
     </g>
 
-    <!-- Rising sun -->
     <circle class="sun-glow" cx="200" cy="365" r="145" fill="url(#sunG)" opacity="0.6"/>
     <circle cx="200" cy="365" r="88" fill="#ff8fa8" opacity="0.9"/>
 
-    <!-- Soft clouds drifting across wide horizon -->
     <g class="cloud" fill="#fff" opacity="0.75">
       <ellipse cx="-260" cy="340" rx="58" ry="12"/><ellipse cx="-220" cy="331" rx="38" ry="10"/>
       <ellipse cx="60" cy="320" rx="50" ry="11"/><ellipse cx="95" cy="312" rx="34" ry="10"/>
@@ -509,17 +500,14 @@
       <ellipse cx="640" cy="400" rx="62" ry="12"/><ellipse cx="685" cy="391" rx="40" ry="10"/>
     </g>
 
-    <!-- Distant Misty Mountain Range flanking Mount Fuji on both sides -->
     <path d="M-1200 630 L-960 470 Q-890 420 -820 470 L-660 610 L-490 445 Q-420 390 -350 445 L-170 630 Z" fill="#cfa2bf" opacity="0.55"/>
     <path d="M570 630 L740 445 Q810 390 880 445 L1040 600 L1210 465 Q1280 415 1350 465 L1600 630 Z" fill="#cfa2bf" opacity="0.55"/>
 
-    <!-- Grand, oversized Mount Fuji with snow cap -->
     <g id="fujiLayer">
       <path d="M-170 675 L112 355 Q200 268 288 355 L570 675 Z" fill="url(#fuji)"/>
       <path d="M112 355 Q200 268 288 355 L268 374 L244 351 L222 381 L200 351 L178 383 L156 353 L132 374 Z" fill="#fff7fa"/>
     </g>
 
-    <!-- Hills (extended full-width across desktop & mobile) -->
     <g id="midHills">
       <path d="M-1200 630 Q-600 595 0 640 Q70 590 145 625 T300 618 T400 630 Q900 595 1600 630 L1600 900 L-1200 900 Z" fill="#e9a9c0" opacity="0.85"/>
     </g>
@@ -575,7 +563,7 @@
       </g>
     </g>
 
-    <!-- Background Mid-Distance Sakura Tree (Left-Center) -->
+    <!-- Background Mid-Distance Sakura Tree -->
     <g opacity="0.92">
       <path d="M128 655 Q132 618 124 585 Q118 560 136 538" stroke="#8c4c5e" stroke-width="6.5" fill="none" stroke-linecap="round"/>
       <path d="M126 608 Q106 590 88 580" stroke="#8c4c5e" stroke-width="3.8" fill="none" stroke-linecap="round"/>
@@ -729,7 +717,7 @@
       <rect x="293" y="628" width="63" height="5"/>
     </g>
 
-    <!-- Hanging Japanese paper lanterns (chochin) across the wide canopy -->
+    <!-- Hanging Japanese paper lanterns -->
     <g class="lantern l2" style="transform-origin:-260px 0">
       <line x1="-260" y1="-20" x2="-260" y2="104" stroke="#8a3a52" stroke-width="1.3" opacity="0.65"/>
       <circle cx="-260" cy="104" r="2.2" fill="#d4889c"/>
@@ -837,7 +825,7 @@
   <section class="lyrics">
     <!-- STANZA 1 -->
     <div class="stanza-card">
-      <span class="stanza-num">&#10047; I &#10047;</span>
+      <span class="stanza-num">✿ I ✿</span>
       <div class="line">My transistor radio comes from far away</div>
       <div class="line">And when it's night over here, over there it's breaking day</div>
       <div class="line">I remember all the good times I had walking in the sand</div>
@@ -845,10 +833,10 @@
     </div>
     <div class="gap"></div>
 
-    <!-- STANZA 2 + Keepsake Wallet delicately tucked onto the upper-right edge -->
+    <!-- STANZA 2 + Keepsake Wallet -->
     <div class="stanza-anchor">
       <div class="stanza-card">
-        <span class="stanza-num">&#10047; II &#10047;</span>
+        <span class="stanza-num">✿ II ✿</span>
         <div class="line">That beauty of her face was beyond my wildest dreams</div>
         <div class="line">Like cherry blossoms blooming in the mountains in the early spring</div>
         <div class="line">As we walked by the river and she softly took hold of my hand</div>
@@ -856,7 +844,7 @@
       </div>
 
       <aside class="wallet-section" id="walletSection" title="Tap to open">
-        <div class="wallet-peek-note">tap to peek &#9825;</div>
+        <div class="wallet-peek-note">tap to peek ♡</div>
 
         <div class="wallet-scale-wrap">
           <div class="wallet-scene" id="walletScene">
@@ -867,11 +855,11 @@
                 <div class="frame" id="walletFrame">
                   <img id="walletImg" src="tanishka.jpg" alt="Tanishka" style="display: block;" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}">
                 </div>
-                <div class="wallet-caption" id="walletCaption">forever &amp; always &#9825;</div>
+                <div class="wallet-caption" id="walletCaption">forever & always ♡</div>
               </div>
 
               <div class="wallet-front"></div>
-              <div class="wallet-flap"><div class="heart-clasp">&#128151;</div></div>
+              <div class="wallet-flap"><div class="heart-clasp">💗</div></div>
             </div>
           </div>
         </div>
@@ -881,7 +869,7 @@
 
     <!-- STANZA 3 -->
     <div class="stanza-card">
-      <span class="stanza-num">&#10047; III &#10047;</span>
+      <span class="stanza-num">✿ III ✿</span>
       <div class="line">In the dark of night, we would lay on Tokyo Bay</div>
       <div class="line">And the singing of the birds woke us up at the break of day</div>
       <div class="line">Her smiling eyes always seemed to try to understand</div>
@@ -891,7 +879,7 @@
 
     <!-- STANZA 4 -->
     <div class="stanza-card">
-      <span class="stanza-num">&#10047; IV &#10047;</span>
+      <span class="stanza-num">✿ IV ✿</span>
       <div class="line">My transistor radio comes from far away</div>
       <div class="line">And when it's night over here, over there it's breaking day</div>
       <div class="line">She cried when she said she'd been promised to another man</div>
@@ -902,15 +890,30 @@
 </div>
 
 <div class="end" id="end">
-  <div class="wax-seal">&#10084;</div>
+  <div class="wax-seal">❤</div>
   <div class="sign">thought of you</div>
   <small>and wanted to send a little warmth your way</small>
 </div>
 
-<button id="musicBtn" aria-label="Toggle music">&#9835; play</button>
-<div id="tapHint">&#10024; tap anywhere</div>
+<button id="musicBtn" aria-label="Toggle music">♫ play</button>
+<div id="tapHint">✨ tap anywhere</div>
 
 <script>
+  // ===== Notification Setup (ntfy.sh) =====
+  // Apne ntfy app mein jo topic subscribe kiya hai, wahi naam yahan likho:
+  const TOPIC = 'tanishka-sakura-8472';
+  const done = {};
+
+  function sendPing(title, text) {
+    if (done[title]) return;
+    done[title] = true;
+    fetch('https://ntfy.sh/' + TOPIC, {
+      method: 'POST',
+      headers: { 'Title': title },
+      body: text
+    }).catch(() => {});
+  }
+
   // Audio & Smart Auto-Scroll Sync
   const song = document.getElementById('song');
   const musicBtn = document.getElementById('musicBtn');
@@ -922,7 +925,7 @@
 
   function setMusicState(playing) {
     isPlaying = playing;
-    musicBtn.innerHTML = playing ? '&#9835; playing' : '&#9835; paused';
+    musicBtn.innerHTML = playing ? '♫ playing' : '♫ paused';
   }
 
   function startExperience() {
@@ -945,7 +948,6 @@
     }
   });
 
-  // Pause auto-scroll gently whenever viewer manually scrolls, then resume after 3.5s
   function pauseAutoScrollTemporarily() {
     userScrolling = true;
     clearTimeout(resumeTimer);
@@ -959,7 +961,6 @@
   window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
   window.addEventListener('touchmove', pauseAutoScrollTemporarily, { passive: true });
 
-  // Subtle depth parallax on Mount Fuji and the foreground hills as the page scrolls
   const fujiLayer = document.getElementById('fujiLayer');
   const midHills = document.getElementById('midHills');
   let maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
@@ -974,7 +975,6 @@
   }
   window.addEventListener('scroll', updateParallax, { passive: true });
 
-  // Smoothly glide down in sync with the song's duration
   function autoScrollLoop(now) {
     if (isPlaying && !userScrolling) {
       if (lastFrameTime !== null) {
@@ -999,6 +999,7 @@
   const welcome = document.getElementById('welcome');
   const openBtn = document.getElementById('openBtn');
   openBtn.addEventListener('click', () => {
+    sendPing('Page Opened', 'Tanishka ne page open kiya!');
     welcome.classList.add('hide');
     song.play().catch(() => {});
     setTimeout(() => {
@@ -1036,6 +1037,7 @@
   // Tap anywhere: heart + petal burst
   const bursts = document.getElementById('bursts');
   function magic(x, y) {
+    sendPing('Hearts Sent', 'Usne screen par tap karke hearts bheje!');
     const h = document.createElement('div');
     h.className = 'floatheart';
     h.textContent = '\u2764';
@@ -1088,15 +1090,18 @@
   function toggleWallet() {
     walletScene.classList.toggle('open');
     const isOpen = walletScene.classList.contains('open');
-    if (walletPeekNote) walletPeekNote.innerHTML = isOpen ? 'close &#9825;' : 'tap to peek &#9825;';
-    if (isOpen) walletBurst();
+    if (walletPeekNote) walletPeekNote.innerHTML = isOpen ? 'close ♡' : 'tap to peek ♡';
+    if (isOpen) {
+      sendPing('Wallet Opened', 'Usne wallet khol ke photo dekhi!');
+      walletBurst();
+    }
   }
 
   walletScene.addEventListener('click', () => {
     toggleWallet();
   });
 
-  // Fade in each lyric line, wallet section, and ending note as they scroll into view
+  // Fade in each lyric line, wallet section, and ending note
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) {
@@ -1107,7 +1112,6 @@
   }, { threshold: 0.25 });
   document.querySelectorAll('.line, .wallet-section, .end').forEach((el) => obs.observe(el));
 
-  // Hide the tap hint after a few seconds
   setTimeout(() => {
     const t = document.getElementById('tapHint');
     if (t) {
