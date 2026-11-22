@@ -12,7 +12,6 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #5e3142;
     background: linear-gradient(180deg, #e5b7d4 0%, #fbd0de 35%, #ffe5d8 70%, #d4839f 100%);
-    background-attachment: fixed;
     overflow-x: hidden;
     min-height: 100vh;
   }
@@ -30,6 +29,7 @@
     text-align: center; padding: 28px;
     background: radial-gradient(circle at 50% 42%, #fff5f8 0%, #ffd8e6 55%, #f7bdd1 100%);
     transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.4s;
+    will-change: opacity;
   }
   #welcome.hide { opacity: 0; visibility: hidden; pointer-events: none; }
   #welcome .envelope-card {
@@ -58,6 +58,7 @@
     box-shadow: 0 10px 26px rgba(223, 101, 139, 0.38); cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     animation: beat 2.4s ease-in-out infinite;
+    will-change: transform;
   }
   #openBtn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 14px 30px rgba(223, 101, 139, 0.45); }
   #openBtn:active { transform: scale(0.97); }
@@ -70,16 +71,17 @@
     z-index: 0;
     pointer-events: none;
     background: linear-gradient(180deg, #e5b7d4 0%, #fbd0de 35%, #ffe5d8 70%, #f5b4ca 100%);
+    transform: translateZ(0);
   }
   #scene svg { width: 100%; height: 100%; display: block; }
   .sun-glow { animation: pulse 6s ease-in-out infinite alternate; }
   @keyframes pulse { from { opacity: 0.7; } to { opacity: 1; } }
-  .cloud { animation: drift 46s linear infinite; }
+  .cloud { animation: drift 46s linear infinite; will-change: transform; }
   .cloud.c2 { animation-duration: 68s; animation-delay: -22s; }
-  @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(1400px); } }
+  @keyframes drift { from { transform: translate3d(-200px, 0, 0); } to { transform: translate3d(1400px, 0, 0); } }
   .twinkle { animation: tw 2.8s ease-in-out infinite alternate; }
   @keyframes tw { from { opacity: 0.25; } to { opacity: 1; } }
-  .lantern { animation: sway 4.5s ease-in-out infinite alternate; transform-origin: 50% 0; }
+  .lantern { animation: sway 4.5s ease-in-out infinite alternate; transform-origin: 50% 0; will-change: transform; }
   .lantern.l2 { animation-delay: -1.5s; animation-duration: 5.2s; }
   .lantern.l3 { animation-delay: -3s; }
   @keyframes sway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
@@ -90,13 +92,13 @@
     animation: shoot 11s ease-in-out infinite;
   }
   @keyframes shoot {
-    0%, 72% { opacity: 0; transform: translate(0, 0); }
+    0%, 72% { opacity: 0; transform: translate3d(0, 0, 0); }
     76% { opacity: 0.95; }
-    84% { opacity: 0; transform: translate(-180px, 95px); }
-    100% { opacity: 0; transform: translate(-180px, 95px); }
+    84% { opacity: 0; transform: translate3d(-180px, 95px, 0); }
+    100% { opacity: 0; transform: translate3d(-180px, 95px, 0); }
   }
 
-  #petals, #fireflies, #bursts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  #petals, #fireflies, #bursts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; transform: translateZ(0); }
   #petals { z-index: 1; }
   #fireflies { z-index: 1; }
   #bursts { z-index: 60; }
@@ -105,34 +107,38 @@
     background: radial-gradient(circle at 30% 30%, #fff 0%, #ffc4d8 60%, #f598b7 100%);
     border-radius: 150% 0 150% 0; opacity: 0.85;
     animation: fall linear infinite;
+    will-change: transform, opacity;
   }
   @keyframes fall {
-    0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity: 0; }
+    0% { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
     10% { opacity: 0.9; }
-    100% { transform: translateY(110vh) translateX(80px) rotate(540deg); opacity: 0.2; }
+    100% { transform: translate3d(80px, 110vh, 0) rotate(540deg); opacity: 0.2; }
   }
   .firefly {
     position: absolute; width: 5px; height: 5px; border-radius: 50%;
-    background: #fff7d1; box-shadow: 0 0 10px 3px rgba(255, 236, 150, 0.78);
+    background: #fff7d1; box-shadow: 0 0 8px 2px rgba(255, 236, 150, 0.78);
     animation: float ease-in-out infinite alternate, blink 2.6s ease-in-out infinite alternate;
+    will-change: transform, opacity;
   }
-  @keyframes float { from { transform: translate(0,0); } to { transform: translate(35px,-55px); } }
+  @keyframes float { from { transform: translate3d(0,0,0); } to { transform: translate3d(35px,-55px,0); } }
   @keyframes blink { from { opacity: 0.15; } to { opacity: 1; } }
   .burst-petal {
     position: absolute; width: 11px; height: 11px;
     background: radial-gradient(circle at 30% 30%, #fff, #f797b7);
     border-radius: 150% 0 150% 0;
     animation: burst 1.5s ease-out forwards;
+    will-change: transform, opacity;
   }
   @keyframes burst {
-    from { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
-    to { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(0.4); opacity: 0; }
+    from { transform: translate3d(0,0,0) rotate(0deg) scale(1); opacity: 1; }
+    to { transform: translate3d(var(--dx), var(--dy), 0) rotate(360deg) scale(0.4); opacity: 0; }
   }
   .floatheart {
     position: absolute; font-size: 20px; color: #e8648e;
     animation: rise 2.3s ease-out forwards;
+    will-change: transform, opacity;
   }
-  @keyframes rise { from { transform: translateY(0) scale(0.6); opacity: 1; } to { transform: translateY(-150px) scale(1.25); opacity: 0; } }
+  @keyframes rise { from { transform: translate3d(0,0,0) scale(0.6); opacity: 1; } to { transform: translate3d(0,-150px,0) scale(1.25); opacity: 0; } }
 
   /* ===== Hero ===== */
   .hero {
@@ -195,6 +201,7 @@
     text-shadow: 0 1px 6px rgba(255,255,255,0.85);
     opacity: 0; transform: translate3d(0, 14px, 0);
     transition: opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1), transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
   }
   .line.show { opacity: 1; transform: translate3d(0, 0, 0); }
   .gap { height: 15vh; }
@@ -293,10 +300,11 @@
     perspective: 900px;
     animation: walletBob 4s ease-in-out infinite;
     transition: transform .4s cubic-bezier(.22,1,.36,1);
+    will-change: transform;
   }
   .wallet-scene:hover .wallet { transform: translateY(-4px); }
   .wallet-scene:active .wallet { transform: scale(.98); }
-  @keyframes walletBob { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+  @keyframes walletBob { 0%,100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -6px, 0); } }
 
   .wallet-back {
     position: absolute; inset: 0; background: #c95883; border-radius: 26px;
@@ -312,7 +320,7 @@
     width: 100%; height: 100%; border-radius: 6px; overflow: hidden;
     background: #ffd9e6; position: relative;
   }
-  .wallet-photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .wallet-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .wallet-photo .ph {
     position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center; font-size: 14px; color: #8a3a5c; gap: 6px;
@@ -342,7 +350,6 @@
   .heart-clasp {
     position: absolute; left: 50%; bottom: -14px; width: 34px; height: 34px; margin-left: -17px;
     display: flex; align-items: center; justify-content: center; font-size: 25px;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,.25));
   }
   .wallet-scene.open .wallet-flap {
     transition: transform .8s cubic-bezier(.65,0,.35,1), filter .8s ease, z-index 0s .4s;
@@ -350,18 +357,19 @@
   }
   .wallet-scene.open .wallet-photo {
     transition: transform 1.1s cubic-bezier(.22,1,.36,1) .6s;
-    transform: translateY(-108px) rotate(-3deg) scale(1.02);
+    transform: translate3d(0, -108px, 0) rotate(-3deg) scale(1.02);
   }
-  .wallet-scene:not(.open) .wallet-photo { transform: translateY(0); }
+  .wallet-scene:not(.open) .wallet-photo { transform: translate3d(0, 0, 0); }
 
   .wallet-float {
     position: fixed; font-size: 22px; pointer-events: none;
     animation: walletFloatUp 2.4s cubic-bezier(.2,.7,.3,1) forwards; z-index: 65;
+    will-change: transform, opacity;
   }
   @keyframes walletFloatUp {
-    0% { opacity: 0; transform: translateY(0) scale(.6); }
+    0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.6); }
     15% { opacity: 1; }
-    100% { transform: translateY(-240px) translateX(var(--dx,0px)) scale(1.3); opacity: 0; }
+    100% { transform: translate3d(var(--dx,0px), -240px, 0) scale(1.3); opacity: 0; }
   }
 
   /* Floating controls */
@@ -503,12 +511,12 @@
     <path d="M-1200 630 L-960 470 Q-890 420 -820 470 L-660 610 L-490 445 Q-420 390 -350 445 L-170 630 Z" fill="#cfa2bf" opacity="0.55"/>
     <path d="M570 630 L740 445 Q810 390 880 445 L1040 600 L1210 465 Q1280 415 1350 465 L1600 630 Z" fill="#cfa2bf" opacity="0.55"/>
 
-    <g id="fujiLayer">
+    <g id="fujiLayer" style="will-change: transform;">
       <path d="M-170 675 L112 355 Q200 268 288 355 L570 675 Z" fill="url(#fuji)"/>
       <path d="M112 355 Q200 268 288 355 L268 374 L244 351 L222 381 L200 351 L178 383 L156 353 L132 374 Z" fill="#fff7fa"/>
     </g>
 
-    <g id="midHills">
+    <g id="midHills" style="will-change: transform;">
       <path d="M-1200 630 Q-600 595 0 640 Q70 590 145 625 T300 618 T400 630 Q900 595 1600 630 L1600 900 L-1200 900 Z" fill="#e9a9c0" opacity="0.85"/>
     </g>
     <g id="nearHills">
@@ -853,7 +861,7 @@
 
               <div class="wallet-photo">
                 <div class="frame" id="walletFrame">
-                  <img id="walletImg" src="tanishka.jpg" alt="Tanishka" style="display: block;" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}">
+                  <img id="walletImg" src="tanishka.jpg" alt="Tanishka" onerror="if(!this.dataset.ext){this.dataset.ext='1';this.src='tanishka.png';}else if(this.dataset.ext==='1'){this.dataset.ext='2';this.src='tanishka.jpeg';}else if(this.dataset.ext==='2'){this.dataset.ext='3';this.src='tanishka.webp';}">
                 </div>
                 <div class="wallet-caption" id="walletCaption">forever & always ♡</div>
               </div>
@@ -925,10 +933,15 @@
   let resumeTimer = null;
   let scrollExactY = window.scrollY;
   let lastFrameTime = null;
+  let rafId = null;
 
   function setMusicState(playing) {
     isPlaying = playing;
     musicBtn.innerHTML = playing ? '♫ playing' : '♫ paused';
+    if (playing && !rafId) {
+      lastFrameTime = performance.now();
+      rafId = requestAnimationFrame(autoScrollLoop);
+    }
   }
 
   function startExperience() {
@@ -971,30 +984,37 @@
     maxScrollCache = document.documentElement.scrollHeight - window.innerHeight;
   }, { passive: true });
 
-  function updateParallax() {
-    const progress = maxScrollCache > 0 ? Math.min(window.scrollY / maxScrollCache, 1) : 0;
-    if (fujiLayer) fujiLayer.style.transform = `translate3d(0, ${progress * -22}px, 0)`;
-    if (midHills) midHills.style.transform = `translate3d(0, ${progress * -10}px, 0)`;
-  }
-  window.addEventListener('scroll', updateParallax, { passive: true });
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const progress = maxScrollCache > 0 ? Math.min(window.scrollY / maxScrollCache, 1) : 0;
+        if (fujiLayer) fujiLayer.style.transform = `translate3d(0, ${progress * -22}px, 0)`;
+        if (midHills) midHills.style.transform = `translate3d(0, ${progress * -10}px, 0)`;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 
   function autoScrollLoop(now) {
-    if (isPlaying && !userScrolling) {
-      if (lastFrameTime !== null) {
-        const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
-        const duration = (song.duration && isFinite(song.duration) && song.duration > 10) ? song.duration : 155;
-        const pxPerSec = maxScrollCache / Math.max(duration - 4, 20);
+    if (!isPlaying) {
+      rafId = null;
+      return;
+    }
+    if (!userScrolling && lastFrameTime !== null) {
+      const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+      const duration = (song.duration && isFinite(song.duration) && song.duration > 10) ? song.duration : 155;
+      const pxPerSec = maxScrollCache / Math.max(duration - 4, 20);
 
-        if (scrollExactY < maxScrollCache - 1) {
-          scrollExactY = Math.min(maxScrollCache, scrollExactY + pxPerSec * dt);
-          window.scrollTo(0, scrollExactY);
-        }
+      if (scrollExactY < maxScrollCache - 1) {
+        scrollExactY = Math.min(maxScrollCache, scrollExactY + pxPerSec * dt);
+        window.scrollTo(0, scrollExactY);
       }
     }
     lastFrameTime = now;
-    requestAnimationFrame(autoScrollLoop);
+    rafId = requestAnimationFrame(autoScrollLoop);
   }
-  requestAnimationFrame(autoScrollLoop);
 
   song.addEventListener('ended', () => setMusicState(false));
 
@@ -1037,7 +1057,7 @@
     ff.appendChild(f);
   }
 
-  // Tap anywhere: heart + petal burst
+  // Tap anywhere: heart + petal burst (500ms cooldown)
   const bursts = document.getElementById('bursts');
   function magic(x, y) {
     sendPing('Hearts Sent', 'Usne screen par tap karke hearts bheje!', 500);
@@ -1049,7 +1069,7 @@
     bursts.appendChild(h);
     setTimeout(() => h.remove(), 2500);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 6; i++) {
       const b = document.createElement('div');
       b.className = 'burst-petal';
       const a = Math.random() * Math.PI * 2;
@@ -1077,7 +1097,7 @@
 
   function walletBurst() {
     const rect = walletScene.getBoundingClientRect();
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 8; i++) {
       const h = document.createElement('div');
       h.className = 'wallet-float';
       h.textContent = ['💗', '💖', '💕', '✨', '🌸'][i % 5];
