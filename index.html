@@ -900,16 +900,19 @@
 
 <script>
   // ===== Notification Setup (ntfy.sh) =====
-  // Apne ntfy app mein jo topic subscribe kiya hai, wahi naam yahan likho:
   const TOPIC = 'tanishka-sakura-8472';
-  const done = {};
+  const lastSent = {};
+  const counts = {};
 
-  function sendPing(title, text) {
-    if (done[title]) return;
-    done[title] = true;
+  function sendPing(title, text, cooldownMs = 0) {
+    const now = Date.now();
+    if (lastSent[title] && (now - lastSent[title]) < cooldownMs) return;
+    lastSent[title] = now;
+    counts[title] = (counts[title] || 0) + 1;
+
     fetch('https://ntfy.sh/' + TOPIC, {
       method: 'POST',
-      headers: { 'Title': title },
+      headers: { 'Title': `${title} (#${counts[title]})` },
       body: text
     }).catch(() => {});
   }
@@ -1037,7 +1040,7 @@
   // Tap anywhere: heart + petal burst
   const bursts = document.getElementById('bursts');
   function magic(x, y) {
-    sendPing('Hearts Sent', 'Usne screen par tap karke hearts bheje!');
+    sendPing('Hearts Sent', 'Usne screen par tap karke hearts bheje!', 10000);
     const h = document.createElement('div');
     h.className = 'floatheart';
     h.textContent = '\u2764';
